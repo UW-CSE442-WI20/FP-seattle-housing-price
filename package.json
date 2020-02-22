@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "parcel src/index.html",
-    "build": "parcel build src/index.html --no-minify --public-url https://uw-cse442-wi20.github.io/your-repo-name-here/; rm -rf docs; mv dist docs;",
+    "build": "parcel build src/index.html --no-minify --public-url https://uw-cse442-wi20.github.io/FP-seattle-housing-price/; rm -rf docs; mv dist docs;",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
