@@ -1,0 +1,19 @@
+{
+  "name": "uw-cse442-fp-submission",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html --no-minify --public-url https://uw-cse442-wi20.github.io/your-repo-name-here/; rm -rf docs; mv dist docs;",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-static-files-copy": "^2.3.1"
+  },
+  "dependencies": {
+    "d3": "^5.15.0"
+  }
+}
