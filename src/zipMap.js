@@ -45,7 +45,8 @@ class ZipMap {
         submit.onclick = function() {
             let zip = document.getElementById("zipChosen").value;
             if (zip in center) {
-                svg.append("circle").attr("cx", center[zip][0]).attr("cy", center[zip][1]).attr("r", "100px").style("fill", "transparent").style("stroke", "black")
+                svg.append("circle").attr("cx", center[zip][0]).attr("cy", center[zip][1]).attr("r", "100px").style("fill", "transparent").style("stroke", "black");
+                svg.append("circle").attr("cx", center[zip][0]).attr("cy", center[zip][1]).attr("r", "5px")
             } else {
                 alert("Please enter valid zip code!")
             }
