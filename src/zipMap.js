@@ -12,7 +12,7 @@ class ZipMap {
         let path = d3.geoPath().projection(projection);
         let svg = d3.select("#map").append("svg").attr("width", w).attr("height", h);
         let map = svg.selectAll("path").data(zipData.features).enter().append("path")
-            .attr("d", path).attr("class", "district")
+            .attr("d", path).style("fill", "#D3D3D3").style("stroke", "white")
             .attr("id", function(d) {
                 let zip = d.properties.ZCTA5CE10;
                 center[zip] = path.centroid(d);
