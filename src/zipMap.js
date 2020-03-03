@@ -48,7 +48,7 @@ class ZipMap {
             let dis = document.getElementById("radiusSelect").value;
             if (zip in center) {
                 svg.append("circle").attr("cx", center[zip][0]).attr("cy", center[zip][1])
-                    .attr("r", dis*20).style("fill", "transparent").style("stroke", "black").attr("id", "circle");
+                    .attr("r", dis*35).style("fill", "transparent").style("stroke", "black").attr("id", "circle");
                 svg.append("circle").attr("cx", center[zip][0]).attr("cy", center[zip][1]).attr("r", "5px").attr("id", "circle");
             } else {
                 alert("Please enter valid zip code!")
