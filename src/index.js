@@ -5,10 +5,10 @@ var myFullpage = new fullpage('#fullpage', {
     menu: '#menu',
     lockAnchors: false,
     sectionsColor: ['#29303F', '#29303F', '#29303F', '#29303F', '#29303F'],
-    anchors:['firstPage', 'secondPage',  'thirdPage', 'fourthPage', 'fifthPage'],
+    anchors:['firstPage', 'secondPage',  'thirdPage', 'fourthPage', 'fifthPage', 'sixthPage', 'seventhPage', 'eighthPage'],
     navigation: true,
     navigationPosition: 'right',
-    navigationTooltips: ['first', 'second', 'third', 'fourth', 'fifth'],
+    navigationTooltips: ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth'],
     // showActiveTooltip: false,
     // slidesNavigation: true,
     // slidesNavPosition: 'bottom',
@@ -38,7 +38,7 @@ var myFullpage = new fullpage('#fullpage', {
     scrollOverflowReset: false,
     scrollOverflowOptions: null,
     touchSensitivity: 15,
-    normalScrollElementTouchThreshold: 5,
+    normalScrollElementTouchThreshold: 8,
     bigSectionsDestination: null,
 
     //Accessibility
