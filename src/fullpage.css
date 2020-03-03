@@ -177,6 +177,7 @@ html.fp-enabled,
     -moz-transition: all 0.1s ease-in-out;
     -o-transition: all 0.1s ease-in-out;
     transition: all 0.1s ease-in-out;
+    background: white;
 }
 #fp-nav ul li:hover a span,
 .fp-slidesNav ul li:hover a span{
@@ -187,7 +188,7 @@ html.fp-enabled,
 #fp-nav ul li .fp-tooltip {
     position: absolute;
     top: -2px;
-    color: #333;
+    color: #ffffff;
     font-size: 14px;
     font-family: arial, helvetica, sans-serif;
     white-space: nowrap;
@@ -233,4 +234,14 @@ html.fp-enabled,
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+}
+
+body, p, div {
+    color: white;
+    font-family: "Verdana", Geneva, sans-serif;
+}
+
+h1 {
+    color: black;
+    font-family: "Verdana", Geneva, sans-serif;
 }

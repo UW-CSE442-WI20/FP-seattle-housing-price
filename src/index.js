@@ -4,6 +4,7 @@ var myFullpage = new fullpage('#fullpage', {
 	//Navigation
     menu: '#menu',
     lockAnchors: false,
+    sectionsColor: ['black', 'black', 'black', 'black', 'black'],
     anchors:['firstPage', 'secondPage',  'thirdPage', 'fourthPage', 'fifthPage'],
     navigation: true,
     navigationPosition: 'right',
