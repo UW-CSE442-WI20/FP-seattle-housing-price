@@ -4,7 +4,7 @@ var myFullpage = new fullpage('#fullpage', {
 	//Navigation
     menu: '#menu',
     lockAnchors: false,
-    sectionsColor: ['#29303F', '#29303F', '#29303F', '#29303F', '#29303F'],
+    sectionsColor: ['#29303F', '#29303F', '#29303F', '#29303F', '#29303F', '#29303F', '#29303F', '#29303F'],
     anchors:['firstPage', 'secondPage',  'thirdPage', 'fourthPage', 'fifthPage', 'sixthPage', 'seventhPage', 'eighthPage'],
     navigation: true,
     navigationPosition: 'right',
