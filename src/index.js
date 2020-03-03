@@ -1,4 +1,3 @@
-console.log(module);
 var fullpage = require('./fullpage');
 
 var myFullpage = new fullpage('#fullpage', {

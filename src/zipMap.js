@@ -8,7 +8,7 @@ class ZipMap {
         const h = 1300;
         let center = {};
 
-        let projection = d3.geoAlbers().translate([w/6, h/2]).scale([100000]).center([0,47.5]).rotate([122.4,0]);
+        let projection = d3.geoAlbers().translate([w/6, h/2.5]).scale([100000]).center([0,47.5]).rotate([122.4,0]);
         let path = d3.geoPath().projection(projection);
         let svg = d3.select("#map").append("svg").attr("width", w).attr("height", h);
         let map = svg.selectAll("path").data(zipData.features).enter().append("path")
@@ -43,15 +43,16 @@ class ZipMap {
 
         let submit = document.getElementById("zipSubmit");
         submit.onclick = function() {
+            svg.selectAll("#circle").remove();
             let zip = document.getElementById("zipChosen").value;
+            let dis = document.getElementById("radiusSelect").value;
             if (zip in center) {
-                svg.append("circle").attr("cx", center[zip][0]).attr("cy", center[zip][1]).attr("r", "100px").style("fill", "transparent").style("stroke", "black");
-                svg.append("circle").attr("cx", center[zip][0]).attr("cy", center[zip][1]).attr("r", "5px")
+                svg.append("circle").attr("cx", center[zip][0]).attr("cy", center[zip][1])
+                    .attr("r", dis*20).style("fill", "transparent").style("stroke", "black").attr("id", "circle");
+                svg.append("circle").attr("cx", center[zip][0]).attr("cy", center[zip][1]).attr("r", "5px").attr("id", "circle");
             } else {
                 alert("Please enter valid zip code!")
             }
-
-            console.log(center["98105"])
         };
 
         let reset = document.getElementById("chooseReset");
