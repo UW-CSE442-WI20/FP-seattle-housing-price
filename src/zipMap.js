@@ -67,24 +67,14 @@ class ZipMap {
         }
 
         let choose = [];
+        let score = [];
 
         function handleMouseClick() {
             if (choose.length < 2) {
+                let name = ["bus", "company", "crime", "grocery", "price", "link", "restaurant", "school"];
                 choose.push(this);
                 let yPo = 100;
-                if (choose.length === 2) {
-                    d3.select(this).style("fill", "#66CCFF");
-                    for (let i of Object.entries(data)) {
-                        let a = i[1][this.id];
-                        if (typeof a == "undefined") {
-                            a = 0;
-                        }
-                        svg1.append("rect").attr("x", 400).attr("y", yPo).attr("height", 20)
-                            .attr("width", 300*a/i[1]["max"]).attr("id", "rect").style("fill", "#66CCFF");
-                        yPo += 25;
-                    }
-                    svg1.append("text").attr("x", 450).attr("y", 90).text(this.id).attr("id", "rect");
-                } else {
+                if (choose.length === 1) {
                     d3.select(this).style("fill", "#00FFCC");
                     for (let i of Object.entries(data)) {
                         let a = i[1][this.id];
@@ -94,21 +84,46 @@ class ZipMap {
                         let b = 300*a/i[1]["max"];
                         svg1.append("rect").attr("x", 300-b).attr("y", yPo).attr("height", 20)
                             .attr("width", b).attr("id", "rect").style("fill", "#00FFCC");
+                        score.push({xPo1: 300-b-40, yPo: yPo+15, value1: a});
                         yPo += 25;
                     }
+                    yPo = 115;
+                    for (let i = 0; i < 8; i++) {
+                        svg1.append("text").attr("x", 350-name[i].length*4).attr("y", yPo).text(name[i]).attr("id", "name");
+                        yPo += 25
+                    }
                     svg1.append("text").attr("x", 200).attr("y", 90).text(this.id).attr("id", "rect");
-                    svg1.append("text").attr("x", 335).attr("y", 115).text("bus").attr("id", "rect");
-                    svg1.append("text").attr("x", 318).attr("y", 140).text("company").attr("id", "rect");
-                    svg1.append("text").attr("x", 328).attr("y", 165).text("crime").attr("id", "rect");
-                    svg1.append("text").attr("x", 323).attr("y", 190).text("grocery").attr("id", "rect");
-                    svg1.append("text").attr("x", 331).attr("y", 215).text("price").attr("id", "rect");
-                    svg1.append("text").attr("x", 333).attr("y", 240).text("link").attr("id", "rect");
-                    svg1.append("text").attr("x", 313).attr("y", 265).text("restaurant").attr("id", "rect");
-                    svg1.append("text").attr("x", 327).attr("y", 290).text("school").attr("id", "rect");
+                    d3.selectAll("#name").style("cursor", "pointer").on("click", function(d, i){
+                        d3.selectAll("#score").remove();
+                        console.log(score)
+                        svg1.append("text").attr("x", score[i].xPo1-20).attr("y", score[i].yPo).text(score[i].value1).attr("id", "score");
+                        svg1.append("text").attr("x", score[i].xPo2+5).attr("y", score[i].yPo).text(score[i].value2).attr("id", "score");
+                    });
+                } else {
+                    d3.select(this).style("fill", "#66CCFF");
+                    let p = 0;
+                    for (let i of Object.entries(data)) {
+                        let a = i[1][this.id];
+                        if (typeof a == "undefined") {
+                            a = 0;
+                        }
+                        let b = 300*a/i[1]["max"];
+                        svg1.append("rect").attr("x", 400).attr("y", yPo).attr("height", 20)
+                            .attr("width", b).attr("id", "rect").style("fill", "#66CCFF");
+                        yPo += 25;
+                        score[p]["xPo2"] = 400+b;
+                        score[p]["value2"] = a;
+                        p++;
+                    }
+                    svg1.append("text").attr("x", 450).attr("y", 90).text(this.id).attr("id", "rect");
                 }
             } else {
                 alert("Please reset the chosen area")
             }
+        }
+
+        function showScore() {
+            console.log("A")
         }
 
         let submit = document.getElementById("zipSubmit");
@@ -130,6 +145,8 @@ class ZipMap {
             d3.select(choose.pop()).style("fill", "D3D3D3");
             d3.select(choose.pop()).style("fill", "D3D3D3");
             d3.selectAll("#rect").remove();
+            d3.selectAll("#name").remove();
+            d3.selectAll("#score").remove();
         };
 
 
