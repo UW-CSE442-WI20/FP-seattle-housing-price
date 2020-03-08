@@ -70,20 +70,22 @@ class ZipMap {
 
         function handleMouseClick() {
             if (choose.length < 2) {
-                d3.select(this).style("fill", "#66CCFF");
                 choose.push(this);
                 let yPo = 100;
                 if (choose.length === 2) {
+                    d3.select(this).style("fill", "#66CCFF");
                     for (let i of Object.entries(data)) {
                         let a = i[1][this.id];
                         if (typeof a == "undefined") {
                             a = 0;
                         }
                         svg1.append("rect").attr("x", 400).attr("y", yPo).attr("height", 20)
-                            .attr("width", 300*a/i[1]["max"]).attr("id", "rect");
+                            .attr("width", 300*a/i[1]["max"]).attr("id", "rect").style("fill", "#66CCFF");
                         yPo += 25;
                     }
+                    svg1.append("text").attr("x", 450).attr("y", 90).text(this.id).attr("id", "rect");
                 } else {
+                    d3.select(this).style("fill", "#00FFCC");
                     for (let i of Object.entries(data)) {
                         let a = i[1][this.id];
                         if (typeof a == "undefined") {
@@ -91,9 +93,10 @@ class ZipMap {
                         }
                         let b = 300*a/i[1]["max"];
                         svg1.append("rect").attr("x", 300-b).attr("y", yPo).attr("height", 20)
-                            .attr("width", b).attr("id", "rect");
+                            .attr("width", b).attr("id", "rect").style("fill", "#00FFCC");
                         yPo += 25;
                     }
+                    svg1.append("text").attr("x", 200).attr("y", 90).text(this.id).attr("id", "rect");
                     svg1.append("text").attr("x", 335).attr("y", 115).text("bus").attr("id", "rect");
                     svg1.append("text").attr("x", 318).attr("y", 140).text("company").attr("id", "rect");
                     svg1.append("text").attr("x", 328).attr("y", 165).text("crime").attr("id", "rect");
