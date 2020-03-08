@@ -76,6 +76,7 @@ class ZipMap {
                 let yPo = 100;
                 if (choose.length === 1) {
                     d3.select(this).style("fill", "#00FFCC");
+                    svg1.append("rect").attr("x", 300).attr("y", 95).attr("height", 205).attr("width", 100).attr("id", "rect").style("fill", "F7F7F7");
                     for (let i of Object.entries(data)) {
                         let a = i[1][this.id];
                         if (typeof a == "undefined") {
@@ -118,6 +119,9 @@ class ZipMap {
                             .style("stroke-dasharray", "2 2").style("stroke", "black").attr("id", "score");
                         svg1.append("line").attr("x1", score[i].xPo2).attr("y1", 100).attr("x2", score[i].xPo2).attr("y2", 345)
                             .style("stroke-dasharray", "2 2").style("stroke", "black").attr("id", "score");
+                        svg1.append("text").attr("x", 345).attr("y", 360).text("0").attr("id", "score");
+                        svg1.append("text").attr("x", score[i].xPo1-20).attr("y", 360).text(score[i].value1).attr("id", "score");
+                        svg1.append("text").attr("x", score[i].xPo2-20).attr("y", 360).text(score[i].value2).attr("id", "score");
                         let x = 15;
                         for (let i = 0; i < 50; i++) {
                             svg1.append("line").attr("x1", x).attr("y1", 330).attr("x2", x).attr("y2", 345)
@@ -139,18 +143,15 @@ class ZipMap {
             }
         }
 
-        function showScore() {
-            console.log("A")
-        }
-
         let submit = document.getElementById("zipSubmit");
         submit.onclick = function() {
             svg.selectAll("#circle").remove();
             let zip = document.getElementById("zipChosen").value;
             let dis = document.getElementById("radiusSelect").value;
             if (zip in center) {
-                svg.append("circle").attr("cx", center[zip][0]).attr("cy", center[zip][1])
-                    .attr("r", dis*35).style("fill", "transparent").style("stroke", "black").attr("id", "circle");
+                let arc = d3.arc().innerRadius(dis*35).outerRadius(dis*35);
+                svg.append("path").attr("fill", "none").attr("stroke", "black").attr("d", arc({startAngle:0, endAngle: 2*Math.PI}))
+                    .attr("transform","translate("+center[zip][0]+","+center[zip][1]+")").attr("id", "circle");
                 svg.append("circle").attr("cx", center[zip][0]).attr("cy", center[zip][1]).attr("r", "5px").attr("id", "circle");
             } else {
                 alert("Please enter valid zip code!")
