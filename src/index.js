@@ -74,6 +74,16 @@ var myFullpage = new fullpage('#fullpage', {
     onSlideLeave: function(anchorLink, index, slideIndex, direction, nextSlideIndex){}
 });
 
+const busData = require('./data/bus_stations_by_zip_code.json');
+const companyData = require('./data/company_by_zip_code.json');
+const crimeData = require('./data/crime_by_zip_code.json');
+const groceryData = require('./data/grocery_by_zip_code.json');
+const priceData = require('./data/housing_price_by_zip_code.json');
+const linkData = require('./data/link_stations_by_zip_code.json');
+const restData = require('./data/restaurants_by_zip_code.json');
+const schoolData = require('./data/schools_by_zip_code.json');
+const zipData = require('./data/zipcode.json');
+
 const zipMap = require('./zipMap');
 const zipMapInstance = new zipMap();
-zipMapInstance.drawMap();
+zipMapInstance.drawMap(zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
