@@ -5,3 +5,7 @@
     float: left;
     width: 50%;
 }
+
+#priority-list ul {
+    position: absolute;
+}

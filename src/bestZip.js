@@ -6,11 +6,15 @@ import { Provider as StyletronProvider } from "styletron-react";
 import { Client as Styletron } from "styletron-engine-atomic";
 
 import DragDropList from "./dragDropList";
+import Buttons from "./buttons";
 
 const engine = new Styletron();
 
 function App() {
-  return <DragDropList />;
+  return (<div>
+      <DragDropList />
+      <Buttons/>
+      </div>);
 }
 
 const rootElement = document.getElementById("priority-list");
