@@ -87,3 +87,7 @@ const zipData = require('./data/zipcode.json');
 const zipMap = require('./zipMap');
 const zipMapInstance = new zipMap();
 zipMapInstance.drawMap(zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
+
+const schoolMap = require('./schoolMap');
+const schoolMapInstance = new schoolMap();
+schoolMapInstance.drawMap(zipData, schoolData);
