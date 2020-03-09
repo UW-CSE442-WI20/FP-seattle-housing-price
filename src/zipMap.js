@@ -40,7 +40,7 @@ class ZipMap {
             data["school"]["max"] = Math.max(data["school"]["max"], i[1].total_public_count + i[1].total_private_count);
         }
         let center = {};
-        let projection = d3.geoAlbers().translate([w/3, h/2]).scale([100000]).center([0,47.5]).rotate([122.4,0]);
+        let projection = d3.geoAlbers().translate([w/3, h/2]).scale([120*w]).center([0,47.5]).rotate([122.4,0]);
         let path = d3.geoPath().projection(projection);
         let svg = d3.select("#map").append("svg").attr("width", w).attr("height", h);
         let svg1 = d3.select("#compare").append("svg").attr("width", w).attr("height", h);

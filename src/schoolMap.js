@@ -1,10 +1,13 @@
 class schoolMap {
     constructor() {}
 
+
     drawMap(d3, zipData, schoolData) {
         let h = document.documentElement.scrollHeight - 10;
         let w = document.documentElement.scrollWidth / 2;
-
+        var toolTipG;
+        var toolTipWidth = 150, toolTipHeight = 50;
+        var toolTipText = "No data";
         let data = {"school":{"max":0}};
         for (let i of Object.entries(schoolData)) {
             data["school"][i[1].zip] = i[1].total_public_count + i[1].total_private_count;
@@ -13,14 +16,14 @@ class schoolMap {
 
         let center = {};
         let projection = d3.geoAlbers().translate([w/3, h/2])
-            .scale([100000])
+            .scale([120 * w])
             .center([0,47.5])
             .rotate([122.4,0]);
         let path = d3.geoPath().projection(projection);
-        self.svg = d3.select("#mapSchool").append("svg").attr("width", w).attr("height", h);
+        let svg = d3.select("#mapSchool").append("svg").attr("width", w).attr("height", h);
         // let svg1 = d3.select("#compare").append("svg").attr("width", w).attr("height", h);
         //
-        let map = self.svg.selectAll("path").data(zipData.features).enter().append("path")
+        let map = svg.selectAll("path").data(zipData.features).enter().append("path")
             .attr("d", path).style("fill", "#D3D3D3").style("stroke", "white")
             .attr("id", function(d) {
                 let zip = d.properties.ZCTA5CE10;
@@ -28,34 +31,76 @@ class schoolMap {
                 return zip;
             })
             .on("mouseover", handleMouseOver)
-            .on("mouseout", handleMouseOut);
+            .on("mouseout", handleMouseOut)
+            .on("mousemove", handleMouseMove);
             // # .on("click", handleMouseClick);
 
+        d3.selection.prototype.moveToFront = function() {
+            return this.each(function(){
+                this.parentNode.appendChild(this);
+            });
+        };
+
         function handleMouseOver() {
-            var toolTipG;
-            var toolTipWidth = 150, toolTipHeight = 50;
+            console.log(this.id);
+
             d3.select(this).style("opacity", .7);
             // Clean up old tooltips
-            self.svg.selectAll('g.tooltip').remove();
+            svg.selectAll('g.tooltip').remove();
             // Append tooltip
-            toolTipG = self.svg.append("g").attr('class', 'tooltip');
+            toolTipG = svg.append("g").attr('class', 'tooltip');
+
+            toolTipG.append("rect")
+                .style('position', 'absolute')
+                .style('z-index', 1001)
+                .style('width', toolTipWidth)
+                .style('height', toolTipHeight)
+                .style('fill', 'white')
+                .style('stroke', 'black')
+                .style("pointer-events", "none")
+                .style('opacity', 0.85);
+
+            var priceForZipcode = data["school"][this.id];
+            if (priceForZipcode) toolTipText = priceForZipcode;
+            else toolTipText = "No data";
+            toolTipG.append("text")
+                .style("pointer-events", "none")
+                .attr("dy", "1.2em")
+                .attr("dx", "6")
+                .attr("font-family", "Open Sans")
+                .attr("font-size", "22px")
+                .text(this.id);
+            toolTipG.append("text")
+                .style("pointer-events", "none")
+                .attr("font-family", "Open Sans")
+                .attr("font-size", "24px")
+                .style("font-weight", 400)
+                .attr("dy", "2.4em")
+                .attr("dx", "6")
+                .text(toolTipText);
+
+
+            d3.select(this).moveToFront();
+        }
+
+        function handleMouseOut() {
+            // Clean up old tooltips
+            svg.selectAll('g.tooltip').remove();
+            d3.select(this).style("opacity", 1);
+            d3.select(this).moveToBack();
+            if (self.selectedRegion)
+                self.selectedRegion.moveToFront();
+        }
+
+        function handleMouseMove() {
+            toolTipText = "" + this.id;
             var xPos = d3.mouse(this)[0] - 15;
-            var yPos = d3.mouse(this)[1] - 55;
+            var yPos = d3.mouse(this)[1] - 80;
             if (yPos - toolTipHeight < 0) {
                 yPos = yPos + 65;
                 xPos = xPos + 30;
             }
             toolTipG.attr("transform", "translate(" + xPos +"," + yPos + ")");
-            var colorKeyWidth = 20, colorKeyHeight = 325, blockHeight = 40;
-            var colorKeySVG = self.svg.append("g")
-                .on("mouseenter", function() {
-                    self.active = true;
-                })
-                .attr("transform", "translate(10, " + (h - colorKeyHeight - 10) + ")");
-        }
-
-        function handleMouseOut() {
-            d3.select(this).style("opacity", 1);
         }
 
         let choose = [];

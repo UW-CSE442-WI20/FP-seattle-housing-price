@@ -96,7 +96,7 @@ schoolMapInstance.drawMap(d3, zipData, schoolData);
 window.addEventListener("resize", doSomething);
 
 function doSomething() {
-    d3.select("svg").remove();
+    d3.selectAll("svg").remove();
     zipMapInstance.drawMap(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
     schoolMapInstance.drawMap(d3, zipData, schoolData);
 }
