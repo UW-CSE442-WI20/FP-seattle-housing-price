@@ -1,8 +1,7 @@
 class ZipMap {
     constructor() {}
 
-    drawMap(zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData) {
-        const d3 = require('d3');
+    drawMap(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData) {
         let h = document.documentElement.scrollHeight - 10;
         let w = document.documentElement.scrollWidth / 2;
 

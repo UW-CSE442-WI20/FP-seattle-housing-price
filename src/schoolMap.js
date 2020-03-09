@@ -1,8 +1,7 @@
 class schoolMap {
     constructor() {}
 
-    drawMap(zipData, schoolData) {
-        const d3 = require('d3');
+    drawMap(d3, zipData, schoolData) {
         let h = document.documentElement.scrollHeight - 10;
         let w = document.documentElement.scrollWidth / 2;
 
@@ -18,7 +17,7 @@ class schoolMap {
             .center([0,47.5])
             .rotate([122.4,0]);
         let path = d3.geoPath().projection(projection);
-        self.svg = d3.select("#mapSchool").append("svg").attr("width", w).attr("height", w);
+        self.svg = d3.select("#mapSchool").append("svg").attr("width", w).attr("height", h);
         // let svg1 = d3.select("#compare").append("svg").attr("width", w).attr("height", h);
         //
         let map = self.svg.selectAll("path").data(zipData.features).enter().append("path")

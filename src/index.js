@@ -86,8 +86,17 @@ const zipData = require('./data/zipcode.json');
 
 const zipMap = require('./zipMap');
 const zipMapInstance = new zipMap();
-zipMapInstance.drawMap(zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
+const d3 = require('d3');
+zipMapInstance.drawMap(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
 
 const schoolMap = require('./schoolMap');
 const schoolMapInstance = new schoolMap();
-schoolMapInstance.drawMap(zipData, schoolData);
+schoolMapInstance.drawMap(d3, zipData, schoolData);
+
+window.addEventListener("resize", doSomething);
+
+function doSomething() {
+    d3.select("svg").remove();
+    zipMapInstance.drawMap(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
+    schoolMapInstance.drawMap(d3, zipData, schoolData);
+}
