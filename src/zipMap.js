@@ -83,8 +83,13 @@ class ZipMap {
                             a = 0;
                         }
                         let b = 300 * a / i[1]["max"];
-                        svg1.append("rect").attr("x", 300).attr("y", yPo).attr("height", 20).transition().duration(600)
-                            .attr("x", 300-b).attr("y", yPo).attr("height", 20).attr("width", b).attr("id", "rect").style("fill", "#00FFCC");
+                        if (b === 0) {
+                            svg1.append("rect").attr("x", 300).attr("y", yPo).attr("height", 20).transition().duration(600)
+                                .attr("x", 299).attr("y", yPo).attr("height", 20).attr("width", 1).attr("id", "rect").style("fill", "black");
+                        } else {
+                            svg1.append("rect").attr("x", 300).attr("y", yPo).attr("height", 20).transition().duration(600)
+                                .attr("x", 300 - b).attr("y", yPo).attr("height", 20).attr("width", b).attr("id", "rect").style("fill", "#00FFCC");
+                        }
                         score.push({xPo1: 300-b, yPo: yPo+15, value1: a});
                         yPo += 25;
                     }
@@ -103,12 +108,26 @@ class ZipMap {
                             a = 0;
                         }
                         let b = 300 * a / i[1]["max"];
-                        svg1.append("rect").attr("x", 400).attr("y", yPo).attr("height", 20)
-                            .transition().duration(600).attr("width", b).attr("id", "rect").style("fill", "#66CCFF");
+                        if (b === 0) {
+                            svg1.append("rect").attr("x", 400).attr("y", yPo).attr("height", 20)
+                                .transition().duration(600).attr("width", 1).attr("id", "rect").style("fill", "black");
+                        } else {
+                            svg1.append("rect").attr("x", 400).attr("y", yPo).attr("height", 20)
+                                .transition().duration(600).attr("width", b).attr("id", "rect").style("fill", "#66CCFF");
+                        }
                         yPo += 25;
-                        score[p]["xPo2"] = 400+b;
+                        score[p]["xPo2"] = 400 + b;
                         score[p]["value2"] = a;
                         p++;
+                    }
+                    yPo = 400;
+                    for (let i = 0; i < 8; i++) {
+                        if (score[i].value1 > score[i].value2) {
+                            svg1.append("text").attr("x", 100).attr("y", yPo).text(choose[0].id + " has more " + name[i] + " than " + choose[1].id).attr("id", "rect");
+                        } else {
+                            svg1.append("text").attr("x", 100).attr("y", yPo).text(choose[0].id + " has less " + name[i] + " than " + choose[1].id).attr("id", "rect");
+                        }
+                        yPo += 15;
                     }
                     svg1.append("text").attr("x", 450).attr("y", 90).text(this.id).attr("id", "rect");
                     d3.selectAll("#name").style("cursor", "pointer").on("click", function(d, i){
