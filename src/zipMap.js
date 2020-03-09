@@ -3,8 +3,8 @@ class ZipMap {
 
     drawMap(zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData) {
         const d3 = require('d3');
-        const w = 1000;
-        const h = 1300;
+        let h = 1300;
+        let w = document.getElementById('map').offsetWidth;
 
         let data = {"bus":{"max":0}, "company":{"max":0}, "crime":{"max":0}, "grocery":{"max":0},
             "price":{"max":0}, "link":{"max":0}, "rest":{"max":0}, "school":{"max":0}};
@@ -40,7 +40,6 @@ class ZipMap {
             data["school"][i[1].zip] = i[1].total_public_count + i[1].total_private_count;
             data["school"]["max"] = Math.max(data["school"]["max"], i[1].total_public_count + i[1].total_private_count);
         }
-
         let center = {};
         let projection = d3.geoAlbers().translate([w/6, h/2.5]).scale([100000]).center([0,47.5]).rotate([122.4,0]);
         let path = d3.geoPath().projection(projection);
