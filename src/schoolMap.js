@@ -3,8 +3,8 @@ class schoolMap {
 
     drawMap(zipData, schoolData) {
         const d3 = require('d3');
-        const w = 1000;
-        const h = 1300;
+        let h = document.documentElement.scrollHeight - 10;
+        let w = document.documentElement.scrollWidth / 2;
 
         let data = {"school":{"max":0}};
         for (let i of Object.entries(schoolData)) {
@@ -13,8 +13,8 @@ class schoolMap {
         }
 
         let center = {};
-        let projection = d3.geoAlbers().translate([w/6, h/2.5])
-            .scale([50000])
+        let projection = d3.geoAlbers().translate([w/3, h/2])
+            .scale([100000])
             .center([0,47.5])
             .rotate([122.4,0]);
         let path = d3.geoPath().projection(projection);
@@ -52,7 +52,7 @@ class schoolMap {
                 .on("mouseenter", function() {
                     self.active = true;
                 })
-                .attr("transform", "translate(10, " + (mapHeight - colorKeyHeight - 10) + ")");
+                .attr("transform", "translate(10, " + (h - colorKeyHeight - 10) + ")");
         }
 
         function handleMouseOut() {
