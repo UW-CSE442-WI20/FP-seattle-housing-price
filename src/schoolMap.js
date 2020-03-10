@@ -20,13 +20,15 @@ class schoolMap {
         var toolTipText = "No data";
 
         let data = {"price":{"max":0}, "school":{"max":0}};
-        for (let i of Object.entries(priceData)) {
-            data["price"][i[0]] = i[1];
-            data["price"]["max"] = Math.max(data["price"]["max"], i[1]);
-        }
+
         for (let i of Object.entries(schoolData)) {
             data["school"][i[1].zip] = i[1].total_public_count + i[1].total_private_count;
             data["school"]["max"] = Math.max(data["school"]["max"], i[1].total_public_count + i[1].total_private_count);
+        }
+
+        for (let i of Object.entries(priceData)) {
+            data["price"][i[0]] = i[1];
+            data["price"]["max"] = Math.max(data["price"]["max"], i[1]);
         }
 
         let center = {};
@@ -38,13 +40,19 @@ class schoolMap {
         let svg = d3.select("#mapSchool").append("svg").attr("width", w).attr("height", h);
 
         // set the dimensions and margins of the graph
-        var margin = {top: 20, right: 20, bottom: 30, left: w / 2},
+        var margin = {top: 50, right: 300, bottom: 500, left: 100},
             width = w - margin.left - margin.right,
             height = h - margin.top - margin.bottom;
+        console.log("width", width, "height", height);
 
         // set the ranges
         var x = d3.scaleLinear().range([0, width]);
         var y = d3.scaleLinear().range([height, 0]);
+
+        // define the line
+        // var valueline = d3.line()
+        //     .x(function(d) { return x(d.keyword); })
+        //     .y(function(d) { return y(d.price); });
 
         var div = d3.select("body").append("div")
             .attr("class", "tooltip")
@@ -53,19 +61,67 @@ class schoolMap {
         // append the svg obgect to the body of the page
         // appends a 'group' element to 'svg'
         // moves the 'group' element to the top left margin
-        // var svg2 = d3.select("#mapSchool").append("svg")
-        //     .attr("width", width + margin.left + margin.right)
-        //     .attr("height", height + margin.top + margin.bottom)
-        //     .append("g")
-        //     .attr("transform",
-        //         "translate(" + margin.left + "," + margin.top + ")");
-        //
-        // function drawData(data) {
-        //     data.forEach(function(d) {
-        //
-        //     })
-        // }
+        var svg2 = d3.select("#drawSchool").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
 
+
+        function drawData(data, keyword) {
+            var arr = [];
+            for (const [key, value] of Object.entries(data[keyword])) {
+                // console.log(key, keyword + ": ", value, "price: ", data['price'][key]);
+                arr.push({
+                    "zipCode": key,
+                    keyword: value,
+                    'price': data['price'][key]
+                });
+            }
+            // console.log(arr);
+            // scale the range of the data
+            x.domain([0, d3.max(arr, function(d) { return d.keyword; })]);
+            y.domain([0, d3.max(arr, function(d) { return d.price; })]);
+
+            // add the valueline path.
+            // svg2.append("path")
+            //     .data([arr])
+            //     .attr("class", "line")
+            //     .attr("d", valueline);
+
+            // add the dots with tooltips
+            svg2.selectAll("dot")
+                .data(arr)
+                .enter().append("circle")
+                .attr("r", 5)
+                // .attr("cx", function(d) { return x(d.zipCode); })
+                .attr("cx", function(d) { return x(d.keyword); })
+                .attr("cy", function(d) { return y(d.price); })
+                .on("mouseover", function(d) {
+                    div.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    // div .html(
+                    //     '<a href= "http://google.com">' + // The first <a> tag
+                    //     formatTime(d.date) +
+                    //     "</a>" +                          // closing </a> tag
+                    //     "<br/>"  + d.close)
+                    //     .style("left", (d3.event.pageX) + "px")
+                    //     .style("top", (d3.event.pageY - 28) + "px");
+                });
+            // add the X Axis
+            svg2.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x));
+
+            // add the Y Axis
+            svg2.append("g")
+                .call(d3.axisLeft(y));
+
+
+        }
+        drawData(data, "school");
 
 
         // let svg1 = d3.select("#compare").append("svg").attr("width", w).attr("height", h);
