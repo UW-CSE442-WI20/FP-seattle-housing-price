@@ -129,7 +129,7 @@ class ZipMap {
                     //     }
                     //     yPo += 15;
                     // }
-                    // svg1.append("text").attr("x", 450).attr("y", 90).text(this.id).attr("id", "rect");
+                    svg1.append("text").attr("x", 450).attr("y", 90).text(this.id).attr("id", "rect");
                     d3.selectAll("#name").style("cursor", "pointer").on("click", function(d, i){
                         d3.selectAll("#score").remove();
                         svg1.append("text").attr("x", score[i].xPo1-30).attr("y", score[i].yPo).text(score[i].value1).attr("id", "score");
