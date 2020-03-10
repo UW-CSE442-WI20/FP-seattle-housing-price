@@ -2,7 +2,7 @@ class schoolMap {
     constructor() {}
 
 
-    drawMap(d3, zipData, schoolData) {
+    drawMap(d3, zipData, schoolData, priceData) {
         let h = document.documentElement.scrollHeight - 10;
         let w = document.documentElement.scrollWidth / 2;
         var loColorHiColor = ["#e3ecfc", "#173463"];
@@ -18,7 +18,12 @@ class schoolMap {
         var toolTipG;
         var toolTipWidth = 150, toolTipHeight = 50;
         var toolTipText = "No data";
-        let data = {"school":{"max":0}};
+
+        let data = {"price":{"max":0}, "school":{"max":0}};
+        for (let i of Object.entries(priceData)) {
+            data["price"][i[0]] = i[1];
+            data["price"]["max"] = Math.max(data["price"]["max"], i[1]);
+        }
         for (let i of Object.entries(schoolData)) {
             data["school"][i[1].zip] = i[1].total_public_count + i[1].total_private_count;
             data["school"]["max"] = Math.max(data["school"]["max"], i[1].total_public_count + i[1].total_private_count);
@@ -31,6 +36,38 @@ class schoolMap {
             .rotate([122.4,0]);
         let path = d3.geoPath().projection(projection);
         let svg = d3.select("#mapSchool").append("svg").attr("width", w).attr("height", h);
+
+        // set the dimensions and margins of the graph
+        var margin = {top: 20, right: 20, bottom: 30, left: w / 2},
+            width = w - margin.left - margin.right,
+            height = h - margin.top - margin.bottom;
+
+        // set the ranges
+        var x = d3.scaleLinear().range([0, width]);
+        var y = d3.scaleLinear().range([height, 0]);
+
+        var div = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+        // append the svg obgect to the body of the page
+        // appends a 'group' element to 'svg'
+        // moves the 'group' element to the top left margin
+        // var svg2 = d3.select("#mapSchool").append("svg")
+        //     .attr("width", width + margin.left + margin.right)
+        //     .attr("height", height + margin.top + margin.bottom)
+        //     .append("g")
+        //     .attr("transform",
+        //         "translate(" + margin.left + "," + margin.top + ")");
+        //
+        // function drawData(data) {
+        //     data.forEach(function(d) {
+        //
+        //     })
+        // }
+
+
+
         // let svg1 = d3.select("#compare").append("svg").attr("width", w).attr("height", h);
         //
         let map = svg.selectAll("path").data(zipData.features).enter().append("path")
@@ -174,10 +211,6 @@ class schoolMap {
                 return "black";
             }
         }
-
-        let choose = [];
-        let score = [];
-
 
     }
 }

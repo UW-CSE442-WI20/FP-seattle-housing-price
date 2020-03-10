@@ -119,17 +119,17 @@ class ZipMap {
                         p++;
                     }
                     yPo = 400;
-                    for (let i = 0; i < 8; i++) {
-                        if (score[i].value1 > score[i].value2) {
-                            svg1.append("text").attr("x", 100).attr("y", yPo).text(choose[0].id + " has more " + name[i] + " than " + choose[1].id).attr("id", "rect");
-                        } else if (score[i].value1 < score[i].value2) {
-                            svg1.append("text").attr("x", 100).attr("y", yPo).text(choose[0].id + " has less " + name[i] + " than " + choose[1].id).attr("id", "rect");
-                        } else {
-                            svg1.append("text").attr("x", 100).attr("y", yPo).text(choose[0].id + " has equal " + name[i] + " as " + choose[1].id).attr("id", "rect");
-                        }
-                        yPo += 15;
-                    }
-                    svg1.append("text").attr("x", 450).attr("y", 90).text(this.id).attr("id", "rect");
+                    // for (let i = 0; i < 8; i++) {
+                    //     if (score[i].value1 > score[i].value2) {
+                    //         svg1.append("text").attr("x", 100).attr("y", yPo).text(choose[0].id + " has more " + name[i] + " than " + choose[1].id).attr("id", "rect");
+                    //     } else if (score[i].value1 < score[i].value2) {
+                    //         svg1.append("text").attr("x", 100).attr("y", yPo).text(choose[0].id + " has less " + name[i] + " than " + choose[1].id).attr("id", "rect");
+                    //     } else {
+                    //         svg1.append("text").attr("x", 100).attr("y", yPo).text(choose[0].id + " has equal " + name[i] + " as " + choose[1].id).attr("id", "rect");
+                    //     }
+                    //     yPo += 15;
+                    // }
+                    // svg1.append("text").attr("x", 450).attr("y", 90).text(this.id).attr("id", "rect");
                     d3.selectAll("#name").style("cursor", "pointer").on("click", function(d, i){
                         d3.selectAll("#score").remove();
                         svg1.append("text").attr("x", score[i].xPo1-30).attr("y", score[i].yPo).text(score[i].value1).attr("id", "score");
