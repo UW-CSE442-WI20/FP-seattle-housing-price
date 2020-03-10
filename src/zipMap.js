@@ -122,8 +122,10 @@ class ZipMap {
                     for (let i = 0; i < 8; i++) {
                         if (score[i].value1 > score[i].value2) {
                             svg1.append("text").attr("x", 100).attr("y", yPo).text(choose[0].id + " has more " + name[i] + " than " + choose[1].id).attr("id", "rect");
-                        } else {
+                        } else if (score[i].value1 < score[i].value2) {
                             svg1.append("text").attr("x", 100).attr("y", yPo).text(choose[0].id + " has less " + name[i] + " than " + choose[1].id).attr("id", "rect");
+                        } else {
+                            svg1.append("text").attr("x", 100).attr("y", yPo).text(choose[0].id + " has equal " + name[i] + " as " + choose[1].id).attr("id", "rect");
                         }
                         yPo += 15;
                     }

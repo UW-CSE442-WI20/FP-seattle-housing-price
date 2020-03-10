@@ -35,11 +35,6 @@ class schoolMap {
             .on("mousemove", handleMouseMove);
             // # .on("click", handleMouseClick);
 
-        d3.selection.prototype.moveToFront = function() {
-            return this.each(function(){
-                this.parentNode.appendChild(this);
-            });
-        };
 
         function handleMouseOver() {
             console.log(this.id);
@@ -80,16 +75,12 @@ class schoolMap {
                 .text(toolTipText);
 
 
-            d3.select(this).moveToFront();
         }
 
         function handleMouseOut() {
             // Clean up old tooltips
-            svg.selectAll('g.tooltip').remove();
             d3.select(this).style("opacity", 1);
-            d3.select(this).moveToBack();
-            if (self.selectedRegion)
-                self.selectedRegion.moveToFront();
+            svg.selectAll('g.tooltip').remove();
         }
 
         function handleMouseMove() {
