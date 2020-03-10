@@ -5,6 +5,8 @@ class schoolMap {
     drawMap(d3, zipData, schoolData, priceData) {
         let h = document.documentElement.scrollHeight - 10;
         let w = document.documentElement.scrollWidth / 2;
+        let textOnDisplay = "Number of Schools";
+        let priceText = "Average Housing Price (In USD)";
         var loColorHiColor = ["#e3ecfc", "#173463"];
         var gradient = ["#E5F6FF", "#ACCEE1", "#73A7C4", "#3A7FA7", "#02588A"];
         var strokeColor = "white";
@@ -19,16 +21,16 @@ class schoolMap {
         var toolTipWidth = 150, toolTipHeight = 50;
         var toolTipText = "No data";
 
-        let data = {"price":{"max":0}, "school":{"max":0}};
-
+        // let data = {"price":{"max":0}, "school":{"max":0}};
+        let data = {"price":{}, "school":{}};
         for (let i of Object.entries(schoolData)) {
             data["school"][i[1].zip] = i[1].total_public_count + i[1].total_private_count;
-            data["school"]["max"] = Math.max(data["school"]["max"], i[1].total_public_count + i[1].total_private_count);
+            // data["school"]["max"] = Math.max(data["school"]["max"], i[1].total_public_count + i[1].total_private_count);
         }
 
         for (let i of Object.entries(priceData)) {
             data["price"][i[0]] = i[1];
-            data["price"]["max"] = Math.max(data["price"]["max"], i[1]);
+            // data["price"]["max"] = Math.max(data["price"]["max"], i[1]);
         }
 
         let center = {};
@@ -102,22 +104,38 @@ class schoolMap {
                     div.transition()
                         .duration(200)
                         .style("opacity", .9);
-                    // div .html(
-                    //     '<a href= "http://google.com">' + // The first <a> tag
-                    //     formatTime(d.date) +
-                    //     "</a>" +                          // closing </a> tag
-                    //     "<br/>"  + d.close)
-                    //     .style("left", (d3.event.pageX) + "px")
-                    //     .style("top", (d3.event.pageY - 28) + "px");
+                    div .html(
+                        d.zipCode + "<br/>" + d.keyword +
+                        "<br/>"  + "<b>" + "$" + d.price + "<b/>")
+                        .style("left", (d3.event.pageX - 15) + "px")
+                        .style("top", (d3.event.pageY - 60) + "px");
+                })
+                .on("mouseout", function(d) {
+
                 });
             // add the X Axis
             svg2.append("g")
                 .attr("transform", "translate(0," + height + ")")
                 .call(d3.axisBottom(x));
 
+            // Add X axis label:
+            svg2.append("text")
+                .attr("text-anchor", "end")
+                .attr("x", width)
+                .attr("y", height + margin.top)
+                .text(textOnDisplay);
+
             // add the Y Axis
             svg2.append("g")
                 .call(d3.axisLeft(y));
+
+            // Y axis label:
+            svg2.append("text")
+                .attr("text-anchor", "end")
+                .attr("transform", "rotate(-90)")
+                .attr("y", -margin.left + 20)
+                .attr("x", -margin.top + 40)
+                .text(priceText);
 
 
         }
@@ -183,7 +201,7 @@ class schoolMap {
             .attr("dy", "1em")
             .attr("fill", darkgrey)
             .attr("class", "unselectable")
-            .text("Number of Schools");
+            .text(textOnDisplay);
 
         colorKeySVG.append("rect")
             .attr("x", 0)
