@@ -31,42 +31,30 @@ class gdp {
                         yPo.house.push(h/2 - j[1].housing/houseMax*h/3);
                     }
                     for (let j = 0; j < 17; j++) {
-                        svg.append("circle").attr("cx", xPo).attr("cy", yPo.gdp[j]).attr("r", w/300).style("fill", "#00FFCC").attr("id", j)
-                            .on("mouseover", handleMouseGDP).on("mouseout", handleMouseOut);
-                        svg.append("circle").attr("cx", xPo).attr("cy", yPo.house[j]).attr("r", w/300).style("fill", "#66CCFF").attr("id", j)
-                            .on("mouseover", handleMouseHouse).on("mouseout", handleMouseOut);
+                        svg.append("circle").attr("cx", xPo).attr("cy", yPo.gdp[j]).transition().delay(800*j).duration(1).attr("r", w/300).style("fill", "#00FFCC");
+                        svg.append("circle").attr("cx", xPo).attr("cy", yPo.house[j]).transition().delay(800*j).duration(1).attr("r", w/300).style("fill", "#66CCFF");
                         if (j !== 16) {
-                            svg.append("line").attr("x1", xPo).attr("y1",yPo.gdp[j]).attr("x2", xPo+4/80*w).attr("y2", yPo.gdp[j+1]).style("stroke", "#00FFCC");
-                            svg.append("line").attr("x1", xPo).attr("y1",yPo.house[j]).attr("x2", xPo+4/80*w).attr("y2", yPo.house[j+1]).style("stroke", "#66CCFF");
+                            svg.append("line").attr("x1", xPo).attr("y1",yPo.gdp[j]).attr("x2", xPo+4/80*w).attr("y2", yPo.gdp[j+1]).transition().delay(800*j).style("stroke", "#00FFCC");
+                            svg.append("line").attr("x1", xPo).attr("y1",yPo.house[j]).attr("x2", xPo+4/80*w).attr("y2", yPo.house[j+1]).transition().delay(800*j).style("stroke", "#66CCFF");
                         }
                         xPo += w/20;
                     }
 
-                    function handleMouseHouse() {
-                        let coor = d3.mouse(this);
-                        let width = [];
-                        let words = [];
-                        let year = 2001 + Number(this.id);
-                        words.push("Year: " + year);
-                        words.push("Housing price: $" + dat[year].housing);
-                        svg.append('g').selectAll('.dummy').data(words).enter().append("text").text(function(d) {return d})
-                            .style("font-size", w/150).each(function() {
-                            let thisWidth = this.getComputedTextLength();
-                            width.push(thisWidth);
-                            this.remove()});
-                        svg.append("rect").attr("x", coor[0]+w/200).attr("y", coor[1]+h/200).attr("width", width[1]+w/100).attr("height", h/20)
-                            .attr("id", "gdphover").style("fill", "F7F7F7");
-                        svg.append("text").attr("x", coor[0]+w/100).attr("y", coor[1]+h/40).text(words[0]).style("font-size", w/150).attr("id", "gdphover");
-                        svg.append("text").attr("x", coor[0]+w/100).attr("y", coor[1]+h/22).text(words[1]).style("font-size", w/150).attr("id", "gdphover");
-                    }
+                    svg.selectAll("circle").on("mouseover", handleMouse).on("mouseout", handleMouseOut);
 
-                    function handleMouseGDP() {
+                    function handleMouse(d, i) {
                         let coor = d3.mouse(this);
                         let width = [];
                         let words = [];
-                        let year = 2001 + Number(this.id);
-                        words.push("Year: " + year);
-                        words.push("GDP: " + dat[year].gdp_per_capita);
+                        if (i % 2 === 0) {
+                            let year = 2001 + i/2;
+                            words.push("Year: " + year);
+                            words.push("GDP: " + dat[year].gdp_per_capita);
+                        } else {
+                            let year = 2001 + (i-1)/2;
+                            words.push("Year: " + year);
+                            words.push("Housing price: $" + dat[year].housing);
+                        }
                         svg.append('g').selectAll('.dummy').data(words).enter().append("text").text(function(d) {return d})
                             .style("font-size", w/150).each(function() {
                             let thisWidth = this.getComputedTextLength();
