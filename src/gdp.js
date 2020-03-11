@@ -48,7 +48,7 @@ class gdp {
                         let words = [];
                         let year = 2001 + Number(this.id);
                         words.push("Year: " + year);
-                        words.push("Housing price: " + yPo.house[this.id].toFixed(2));
+                        words.push("Housing price: $" + dat[year].housing);
                         svg.append('g').selectAll('.dummy').data(words).enter().append("text").text(function(d) {return d})
                             .style("font-size", w/150).each(function() {
                             let thisWidth = this.getComputedTextLength();
@@ -66,7 +66,7 @@ class gdp {
                         let words = [];
                         let year = 2001 + Number(this.id);
                         words.push("Year: " + year);
-                        words.push("GDP: " + yPo.gdp[this.id].toFixed(2));
+                        words.push("GDP: " + dat[year].gdp_per_capita);
                         svg.append('g').selectAll('.dummy').data(words).enter().append("text").text(function(d) {return d})
                             .style("font-size", w/150).each(function() {
                             let thisWidth = this.getComputedTextLength();

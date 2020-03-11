@@ -87,7 +87,7 @@ class ZipMap {
                     }
                     let datWidth = [];
                     svg.append('g').selectAll('.dummyDat').data(dat).enter().append("text").text(function(d) {return d})
-                        .style("font-size", w/90).each(function() {
+                        .attr("font-size", w/90).each(function() {
                         let thisWidth = this.getComputedTextLength();
                         datWidth.push(thisWidth);
                         this.remove()});
@@ -105,7 +105,7 @@ class ZipMap {
                             svg1.append("rect").attr("x", 3*w/10).attr("y", yPo).attr("height", h/50).transition().duration(600)
                                 .attr("x", 3*w/10-b).attr("y", yPo).attr("height", h/50).attr("width", b).attr("id", "rect").style("fill", "#00FFCC");
                         }
-                        svg1.append("text").attr("x", 3*w/10-b-datWidth[j]-w/200).attr("y", yPo+h/60).transition().delay(300).duration(1).text(a).attr("id", "rect").style("font-size", w/90);
+                        svg1.append("text").attr("x", 3*w/10-b-datWidth[j]-w/200).attr("y", yPo+h/60).transition().delay(300).duration(1).text(a).attr("id", "rect").attr("font-size", w/90);
                         score.push({xPo1: 3*w/10-b-a.toString().length*12, yPo: yPo+h/60, value1: a});
                         yPo += h/40;
                         j++;
@@ -114,15 +114,15 @@ class ZipMap {
 
                     let textWidth = [];
                     svg.append('g').selectAll('.dummyText').data(name).enter().append("text").text(function(d) {return d})
-                        .style("font-size", w/90).each(function() {
+                        .attr("font-size", w/90).each(function() {
                             let thisWidth = this.getComputedTextLength();
                             textWidth.push(thisWidth);
                             this.remove()});
                     for (let i = 0; i < 8; i++) {
-                        svg1.append("text").attr("x", w/3-textWidth[i]/2).attr("y", yPo).text(name[i]).attr("id", "name").style("font-size", w/90);
+                        svg1.append("text").attr("x", w/3-textWidth[i]/2).attr("y", yPo).text(name[i]).attr("id", "name").attr("font-size", w/90);
                         yPo += h/40;
                     }
-                    svg1.append("text").attr("x", w/5).attr("y", h/10-h/70).text(this.id).attr("id", "rect").style("font-size", w/90);
+                    svg1.append("text").attr("x", w/5).attr("y", h/10-h/70).text(this.id).attr("id", "rect").attr("font-size", w/90);
                 } else {
                     d3.select(this).style("fill", "#66CCFF");
                     let p = 0;
@@ -139,24 +139,24 @@ class ZipMap {
                             svg1.append("rect").attr("x", 11*w/30).attr("y", yPo).attr("height", h/50)
                                 .transition().duration(600).attr("width", b).attr("id", "rect").style("fill", "#66CCFF");
                         }
-                        svg1.append("text").attr("x", 11*w/30+b+w/200).attr("y", yPo+h/60).transition().delay(300).duration(1).text(a).attr("id", "rect").style("font-size", w/90);
+                        svg1.append("text").attr("x", 11*w/30+b+w/200).attr("y", yPo+h/60).transition().delay(300).duration(1).text(a).attr("id", "rect").attr("font-size", w/90);
                         yPo += h/40;
                         score[p]["xPo2"] = 11*w/30+b+w/200;
                         score[p]["value2"] = a;
                         p++;
                     }
                     yPo += h/40;
-                    for (let i = 0; i < 8; i++) {
-                        if (score[i].value1 > score[i].value2) {
-                            svg1.append("text").attr("x", w/10).attr("y", yPo).text(choose[0].id + " has more " + name[i] + " than " + choose[1].id).attr("id", "rect").style("font-size", w/90);
-                        } else if (score[i].value1 < score[i].value2) {
-                            svg1.append("text").attr("x", w/10).attr("y", yPo).text(choose[0].id + " has less " + name[i] + " than " + choose[1].id).attr("id", "rect").style("font-size", w/90);
-                        } else {
-                            svg1.append("text").attr("x", w/10).attr("y", yPo).text(choose[0].id + " has equal " + name[i] + " as " + choose[1].id).attr("id", "rect").style("font-size", w/90);
-                        }
-                        yPo += h/40;
-                    }
-                    svg1.append("text").attr("x", w/2.2).attr("y", h/10-h/70).text(this.id).attr("id", "rect").style("font-size", w/90);
+                    // for (let i = 0; i < 8; i++) {
+                    //     if (score[i].value1 > score[i].value2) {
+                    //         svg1.append("text").attr("x", w/10).attr("y", yPo).text(choose[0].id + " has more " + name[i] + " than " + choose[1].id).attr("id", "rect").attr("font-size", w/90);
+                    //     } else if (score[i].value1 < score[i].value2) {
+                    //         svg1.append("text").attr("x", w/10).attr("y", yPo).text(choose[0].id + " has less " + name[i] + " than " + choose[1].id).attr("id", "rect").attr("font-size", w/90);
+                    //     } else {
+                    //         svg1.append("text").attr("x", w/10).attr("y", yPo).text(choose[0].id + " has equal " + name[i] + " as " + choose[1].id).attr("id", "rect").attr("font-size", w/90);
+                    //     }
+                    //     yPo += h/40;
+                    // }
+                    svg1.append("text").attr("x", w/2.2).attr("y", h/10-h/70).text(this.id).attr("id", "rect").attr("font-size", w/90);
                     // d3.selectAll("#name").style("cursor", "pointer").on("click", function(d, i){
                     //     d3.selectAll("#score").remove();
                     //     svg1.append("text").attr("x", score[i].xPo1-30).attr("y", score[i].yPo).text(score[i].value1).attr("id", "score");
