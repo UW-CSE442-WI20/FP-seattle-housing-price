@@ -6,6 +6,14 @@
     width: 50%;
 }
 
+.leftcolumn {
+    width: 30%;
+}
+
+.rightcolumn {
+    width: 70%;
+}
+
 #final1 {
     display: flex;
 }
