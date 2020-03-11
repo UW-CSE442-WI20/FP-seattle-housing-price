@@ -99,10 +99,11 @@ class schoolMap {
             svg2.selectAll("dot")
                 .data(arr)
                 .enter().append("circle")
+                .attr("id", function(d) { return d.zipCode + "dot";})
                 .attr("r", 5)
                 .attr("fill", function(d) {
                     // console.log(d);
-                    return color(x(d.keyword));
+                    return color(d.keyword);
                 })
                 .attr("cx", function(d) { return x(d.keyword); })
                 .attr("cy", function(d) { return y(d.price); })
@@ -202,7 +203,7 @@ class schoolMap {
             .attr("transform", "translate(" + colorKeyWidth + ", 0)")
             .selectAll("text")
             .attr("class", "unselectable")
-            .attr("font-family", "Open Sans")
+            // .attr("font-family", "Open Sans")
             .attr('font-size', "12px")
             .attr("fill", darkgrey)
             .attr("dx", "2px");
@@ -230,7 +231,7 @@ class schoolMap {
             .attr("y", colorKeyHeight + 10)
             .attr("class", "unselectable")
             .attr("dominant-baseline", "central")
-            .attr("font-family", "Open Sans")
+            // .attr("font-family", "Open Sans")
             .attr("font-size", "12px")
             .text("no data");
 
@@ -238,7 +239,7 @@ class schoolMap {
 
         function handleMouseOver() {
             console.log(this.id);
-
+            document.getElementById(this.id + "dot").style.fill = "#f95e0a";
             d3.select(this).style("opacity", .7);
             // Clean up old tooltips
             svg.selectAll('g.tooltip').remove();
@@ -262,12 +263,12 @@ class schoolMap {
                 .style("pointer-events", "none")
                 .attr("dy", "1.2em")
                 .attr("dx", "6")
-                .attr("font-family", "Open Sans")
+                // .attr("font-family", "Open Sans")
                 .attr("font-size", "14px")
                 .text(this.id);
             toolTipG.append("text")
                 .style("pointer-events", "none")
-                .attr("font-family", "Open Sans")
+                // .attr("font-family", "Open Sans")
                 .attr("font-size", "14px")
                 .style("font-weight", 400)
                 .attr("dy", "2.4em")
@@ -277,6 +278,7 @@ class schoolMap {
 
         function handleMouseOut() {
             // Clean up old tooltips
+            document.getElementById(this.id + "dot").style.fill = color(data["school"][this.id]);
             d3.select(this).style("opacity", 1);
             svg.selectAll('g.tooltip').transition()
                 .duration(100)
