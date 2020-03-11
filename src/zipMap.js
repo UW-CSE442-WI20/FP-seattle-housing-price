@@ -105,7 +105,7 @@ class ZipMap {
                             svg1.append("rect").attr("x", 3*w/10).attr("y", yPo).attr("height", h/50).transition().duration(600)
                                 .attr("x", 3*w/10-b).attr("y", yPo).attr("height", h/50).attr("width", b).attr("id", "rect").style("fill", "#00FFCC");
                         }
-                        svg1.append("text").attr("x", 3*w/10-b-datWidth[j]-w/200).attr("y", yPo+h/60).text(a).attr("id", "rect").style("font-size", w/90);
+                        svg1.append("text").attr("x", 3*w/10-b-datWidth[j]-w/200).attr("y", yPo+h/60).transition().delay(300).duration(1).text(a).attr("id", "rect").style("font-size", w/90);
                         score.push({xPo1: 3*w/10-b-a.toString().length*12, yPo: yPo+h/60, value1: a});
                         yPo += h/40;
                         j++;
@@ -139,7 +139,7 @@ class ZipMap {
                             svg1.append("rect").attr("x", 11*w/30).attr("y", yPo).attr("height", h/50)
                                 .transition().duration(600).attr("width", b).attr("id", "rect").style("fill", "#66CCFF");
                         }
-                        svg1.append("text").attr("x", 11*w/30+b+w/200).attr("y", yPo+h/60).text(a).attr("id", "rect").style("font-size", w/90);
+                        svg1.append("text").attr("x", 11*w/30+b+w/200).attr("y", yPo+h/60).transition().delay(300).duration(1).text(a).attr("id", "rect").style("font-size", w/90);
                         yPo += h/40;
                         score[p]["xPo2"] = 11*w/30+b+w/200;
                         score[p]["value2"] = a;
