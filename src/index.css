@@ -6,6 +6,19 @@
     width: 50%;
 }
 
+body {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+    opacity: 1;
+    font-size: 16px;
+}
+
+h1 {
+    font-size: 3em;
+    font-weight: 700;
+    color: #4972ba;
+}
+
 div.tooltip {
     position: absolute;
     text-align: center;
