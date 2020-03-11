@@ -2,7 +2,7 @@ class ZipMap {
     constructor() {}
 
     drawMap(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData) {
-        let h = document.documentElement.scrollHeight - 10;
+        let h = document.getElementById('final1').clientHeight*8/9;
         let w = document.documentElement.scrollWidth / 2;
 
         let data = {"bus":{"max":0}, "company":{"max":0}, "crime":{"max":0}, "grocery":{"max":0},
