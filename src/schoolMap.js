@@ -3,7 +3,7 @@ class schoolMap {
 
 
     drawMap(d3, zipData, schoolData, priceData) {
-        let h = document.getElementById('schoolMap').clientHeight*8/9;
+        let h = document.documentElement.scrollHeight - 10;
         let w = document.documentElement.scrollWidth / 2;
         let textOnDisplay = "Number of Schools";
         let priceText = "Average Housing Price (In USD)";
