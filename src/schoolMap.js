@@ -21,6 +21,8 @@ class schoolMap {
         var toolTipWidth = 150, toolTipHeight = 50;
         var toolTipText = "No data";
 
+        var toolTipG2;
+
         // let data = {"price":{"max":0}, "school":{"max":0}};
         let data = {"price":{}, "school":{}};
         for (let i of Object.entries(schoolData)) {
@@ -45,7 +47,7 @@ class schoolMap {
         var margin = {top: 50, right: 300, bottom: 500, left: 100},
             width = w - margin.left - margin.right,
             height = h - margin.top - margin.bottom;
-        console.log("width", width, "height", height);
+        // console.log("width", width, "height", height);
 
         // set the ranges
         var x = d3.scaleLinear().range([0, width]);
@@ -111,7 +113,9 @@ class schoolMap {
                         .style("top", (d3.event.pageY - 60) + "px");
                 })
                 .on("mouseout", function(d) {
-
+                    div.transition()
+                        .duration(200)
+                        .style("opacity", 0);
                 });
             // add the X Axis
             svg2.append("g")
@@ -158,9 +162,9 @@ class schoolMap {
             .on("mouseout", handleMouseOut)
             .on("mousemove", handleMouseMove);
             // # .on("click", handleMouseClick);
-        var colorKeyWidth = 20, colorKeyHeight = 325, blockHeight = 40;
+        var colorKeyWidth = h / 40, blockHeight = h / 20, colorKeyHeight = blockHeight * gradient.length;
         var colorKeySVG = svg.append("g")
-            .attr("transform", "translate(10, " + (h - colorKeyHeight - 10) + ")");
+            .attr("transform", "translate("+ h / 80 + ", " + (h - colorKeyHeight - h / 7) + ")");
         for (var i = 0; i < gradient.length; i++) {
             colorKeySVG.append("rect")
                 .datum([30 - (i + 1) * 6])
@@ -175,7 +179,7 @@ class schoolMap {
         }
         var colorScale = d3.scaleLinear()
             .domain([0, 30])
-            .range([200, 0])
+            .range([colorKeyHeight, 0])
             .nice();
         colorKeySVG.append("g")
             .call(d3.axisRight(colorScale)
@@ -205,14 +209,14 @@ class schoolMap {
 
         colorKeySVG.append("rect")
             .attr("x", 0)
-            .attr("y", 225)
+            .attr("y", colorKeyHeight)
             .attr("width", colorKeyWidth)
             .attr("height", colorKeyWidth)
             .attr("fill", "black");
 
         colorKeySVG.append("text")
-            .attr("x", 30)
-            .attr("y", 235)
+            .attr("x", h / 30)
+            .attr("y", colorKeyHeight + 10)
             .attr("class", "unselectable")
             .attr("dominant-baseline", "central")
             .attr("font-family", "Open Sans")
@@ -263,7 +267,10 @@ class schoolMap {
         function handleMouseOut() {
             // Clean up old tooltips
             d3.select(this).style("opacity", 1);
-            svg.selectAll('g.tooltip').remove();
+            svg.selectAll('g.tooltip').transition()
+                .duration(200)
+                .style("opacity", 0);
+            // svg.selectAll('g.tooltip').remove();
         }
 
         function handleMouseMove() {

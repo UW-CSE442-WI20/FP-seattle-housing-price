@@ -2,8 +2,16 @@
     display: table-row;
 }
 .column {
-    float: left;
+    /*float: left;*/
     width: 50%;
+}
+
+#final1 {
+    display: flex;
+}
+
+#schoolMap {
+    display: flex;
 }
 
 body {
