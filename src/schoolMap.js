@@ -7,6 +7,7 @@ class schoolMap {
         let w = document.documentElement.scrollWidth / 2;
         let textOnDisplay = "Number of Schools";
         let priceText = "Average Housing Price (In USD)";
+        let maxValue = 24;
         var loColorHiColor = ["#e3ecfc", "#173463"];
         var gradient = ["#E5F6FF", "#ACCEE1", "#73A7C4", "#3A7FA7", "#02588A"];
         var strokeColor = "white";
@@ -15,10 +16,10 @@ class schoolMap {
         var strokeHighlightWidth = 3;
         var darkgrey = "#4c4c4c";
         var color = d3.scaleQuantize()
-            .domain([0, 30])
+            .domain([0, maxValue + 1])
             .range(gradient);
         var toolTipG;
-        var toolTipWidth = 150, toolTipHeight = 50;
+        var toolTipWidth = 60, toolTipHeight = 40;
         var toolTipText = "No data";
 
         var toolTipG2;
@@ -99,10 +100,16 @@ class schoolMap {
                 .data(arr)
                 .enter().append("circle")
                 .attr("r", 5)
-                // .attr("cx", function(d) { return x(d.zipCode); })
+                .attr("fill", function(d) {
+                    // console.log(d);
+                    return color(x(d.keyword));
+                })
                 .attr("cx", function(d) { return x(d.keyword); })
                 .attr("cy", function(d) { return y(d.price); })
                 .on("mouseover", function(d) {
+                    d3.select(this).style("fill", "#f95e0a");
+                    // svg2.select(d).attr("fill", "#f95e0a");
+                    document.getElementById(d.zipCode).style.fill = "#f95e0a";
                     div.transition()
                         .duration(200)
                         .style("opacity", .9);
@@ -111,8 +118,11 @@ class schoolMap {
                         "<br/>"  + "<b>" + "$" + d.price + "<b/>")
                         .style("left", (d3.event.pageX - 15) + "px")
                         .style("top", (d3.event.pageY - 60) + "px");
+
                 })
                 .on("mouseout", function(d) {
+                    document.getElementById(d.zipCode).style.fill = color(d.keyword);
+                    d3.select(this).style("fill", color(d.keyword));
                     div.transition()
                         .duration(200)
                         .style("opacity", 0);
@@ -153,21 +163,22 @@ class schoolMap {
                 return mapFillFunct(d);
             })
             .style("stroke", "white")
+            .style("stroke-width", 2)
             .attr("id", function(d) {
                 let zip = d.properties.ZCTA5CE10;
                 center[zip] = path.centroid(d);
-                return zip;
+                return zip.toString();
             })
             .on("mouseover", handleMouseOver)
             .on("mouseout", handleMouseOut)
             .on("mousemove", handleMouseMove);
             // # .on("click", handleMouseClick);
-        var colorKeyWidth = h / 40, blockHeight = h / 20, colorKeyHeight = blockHeight * gradient.length;
+        var colorKeyWidth = h / 60, blockHeight = h / 30, colorKeyHeight = blockHeight * gradient.length;
         var colorKeySVG = svg.append("g")
-            .attr("transform", "translate("+ h / 80 + ", " + (h - colorKeyHeight - h / 7) + ")");
+            .attr("transform", "translate(" + h / 5 + ", " + (colorKeyHeight + h / 7) + ")");
         for (var i = 0; i < gradient.length; i++) {
             colorKeySVG.append("rect")
-                .datum([30 - (i + 1) * 6])
+                .datum([maxValue + 1 - (i + 1) * 5])
                 .attr("x", 0)
                 .attr("y", i * blockHeight)
                 .attr("width", colorKeyWidth)
@@ -178,7 +189,7 @@ class schoolMap {
                 });
         }
         var colorScale = d3.scaleLinear()
-            .domain([0, 30])
+            .domain([0, maxValue])
             .range([colorKeyHeight, 0])
             .nice();
         colorKeySVG.append("g")
@@ -240,9 +251,9 @@ class schoolMap {
                 .style('width', toolTipWidth)
                 .style('height', toolTipHeight)
                 .style('fill', 'white')
-                .style('stroke', 'black')
+                .style('', 'black')
                 .style("pointer-events", "none")
-                .style('opacity', 0.85);
+                .style('opacity', 0.70);
 
             var priceForZipcode = data["school"][this.id];
             if (priceForZipcode) toolTipText = priceForZipcode;
@@ -252,12 +263,12 @@ class schoolMap {
                 .attr("dy", "1.2em")
                 .attr("dx", "6")
                 .attr("font-family", "Open Sans")
-                .attr("font-size", "22px")
+                .attr("font-size", "14px")
                 .text(this.id);
             toolTipG.append("text")
                 .style("pointer-events", "none")
                 .attr("font-family", "Open Sans")
-                .attr("font-size", "24px")
+                .attr("font-size", "14px")
                 .style("font-weight", 400)
                 .attr("dy", "2.4em")
                 .attr("dx", "6")
@@ -268,7 +279,7 @@ class schoolMap {
             // Clean up old tooltips
             d3.select(this).style("opacity", 1);
             svg.selectAll('g.tooltip').transition()
-                .duration(200)
+                .duration(100)
                 .style("opacity", 0);
             // svg.selectAll('g.tooltip').remove();
         }
