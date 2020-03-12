@@ -20,7 +20,7 @@ class crimeMap {
         let w = document.documentElement.scrollWidth / 2;
         let textOnDisplay = "Crime Count";
         let priceText = "Average Housing Price (In USD)";
-        let maxValue = 24;
+        let maxValue = 0;
         var loColorHiColor = ["#e3ecfc", "#173463"];
         var gradient = ["#E5F6FF", "#ACCEE1", "#73A7C4", "#3A7FA7", "#02588A"];
         var strokeColor = "white";
@@ -258,6 +258,7 @@ class crimeMap {
         var colorKeyWidth = h / 60, blockHeight = h / 30, colorKeyHeight = blockHeight * gradient.length;
         var colorKeySVG = svg.append("g")
             .attr("transform", "translate(" + h / 6 + ", " + (colorKeyHeight + h / 6) + ")");
+        var gradient_reverse = gradient.reverse();
         for (var i = 0; i < gradient.length; i++) {
             colorKeySVG.append("rect")
                 .datum([maxValue - (i + 1) * maxValue / 5])
@@ -265,10 +266,7 @@ class crimeMap {
                 .attr("y", i * blockHeight)
                 .attr("width", colorKeyWidth)
                 .attr("height", blockHeight)
-                .attr("fill", function(d) {
-                    // console.log(d);
-                    return color(d);
-                });
+                .attr("fill", gradient_reverse[i]);
         }
         var colorScale = d3.scaleLinear()
             .domain([0, maxValue - 1])

@@ -22,7 +22,7 @@ class busMap {
         let priceText = "Average Housing Price (In USD)";
         let maxValue = 24;
         var loColorHiColor = ["#e3ecfc", "#173463"];
-        var gradient = ["#E5F6FF", "#ACCEE1", "#73A7C4", "#3A7FA7", "#02588A"];
+        var gradient = ["#ACCEE1", "#73A7C4", "#3A7FA7", "#02588A"];
         var strokeColor = "white";
         var strokeHighlightColor = "#F6A600";
         var strokeWidth = 2;
@@ -257,10 +257,10 @@ class busMap {
         // # .on("click", handleMouseClick);
         var colorKeyWidth = h / 60, blockHeight = h / 30, colorKeyHeight = blockHeight * gradient.length;
         var colorKeySVG = svg.append("g")
-            .attr("transform", "translate(" + h / 6 + ", " + (colorKeyHeight + h / 6) + ")");
+            .attr("transform", "translate(" + h / 6 + ", " + (colorKeyHeight + h / 5) + ")");
         for (var i = 0; i < gradient.length; i++) {
             colorKeySVG.append("rect")
-                .datum([maxValue - (i + 1) * maxValue / 5])
+                .datum([maxValue - (i + 1) * maxValue / 4])
                 .attr("x", 0)
                 .attr("y", i * blockHeight)
                 .attr("width", colorKeyWidth)
