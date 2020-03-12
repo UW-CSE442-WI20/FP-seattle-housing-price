@@ -103,6 +103,18 @@ const restaurantMap = require('./restaurantMap');
 const restaurantMapInstance = new restaurantMap();
 restaurantMapInstance.drawMap(d3, zipData, restData, priceData);
 
+const companyMap = require('./companyMap');
+const companyMapInstance = new companyMap();
+companyMapInstance.drawMap(d3, zipData, companyData, priceData);
+
+const busMap = require('./busMap');
+const busMapInstance = new busMap();
+busMapInstance.drawMap(d3, zipData, busData, priceData);
+
+const crimeMap = require('./crimeMap');
+const crimeMapInstance = new crimeMap();
+crimeMapInstance.drawMap(d3, zipData, crimeData, priceData);
+
 
 const bestZip = require('./bestZip');
 const bestZipInstance = new bestZip();
@@ -124,6 +136,9 @@ function redraw() {
 
     groceryMapInstance.drawMap(d3, zipData, groceryData, priceData);
     restaurantMapInstance.drawMap(d3, zipData, restData, priceData);
+    companyMapInstance.drawMap(d3, zipData, companyData, priceData);
+    busMapInstance.drawMap(d3, zipData, busData, priceData);
+    crimeMapInstance.drawMap(d3, zipData, crimeData, priceData);
 
     bestZipInstance.drawGraph(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
 }

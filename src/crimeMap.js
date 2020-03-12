@@ -1,9 +1,9 @@
-class schoolMap {
+class crimeMap {
     constructor() {}
 
 
-    drawMap(d3, zipData, schoolData, priceData) {
-        var theme = "School";
+    drawMap(d3, zipData, crimeData, priceData) {
+        var theme = "Crime";
         var textElementID = "description" + theme;
         var scatterPlotID = "draw" + theme;
         var mapID = "map" + theme;
@@ -18,7 +18,7 @@ class schoolMap {
         }
         let h = document.documentElement.scrollHeight - 10;
         let w = document.documentElement.scrollWidth / 2;
-        let textOnDisplay = "Number of Schools";
+        let textOnDisplay = "Crime Count";
         let priceText = "Average Housing Price (In USD)";
         let maxValue = 24;
         var loColorHiColor = ["#e3ecfc", "#173463"];
@@ -28,24 +28,32 @@ class schoolMap {
         var strokeWidth = 2;
         var strokeHighlightWidth = 3;
         var darkgrey = "#4c4c4c";
-        var color = d3.scaleQuantize()
-            .domain([0, maxValue + 1])
-            .range(gradient);
+
         var toolTipG;
         var toolTipWidth = 60, toolTipHeight = 40;
         var toolTipText = "No data";
 
-        // let data = {"price":{"max":0}, "school":{"max":0}};
-        let data = {"price":{}, "school":{}};
-        for (let i of Object.entries(schoolData)) {
-            data["school"][i[1].zip] = i[1].total_public_count + i[1].total_private_count;
-            // data["school"]["max"] = Math.max(data["school"]["max"], i[1].total_public_count + i[1].total_private_count);
+        // let data = {"price":{"max":0}, "crime":{"max":0}};
+        let data = {"price":{}, "crime":{}};
+
+        for (let i of Object.entries(crimeData)) {
+            data["crime"][i[1].zip] = i[1].count_total;
+            maxValue = Math.max(i[1].count_total, maxValue);
         }
+
+        console.log(data);
+
+
+        var color = d3.scaleQuantize()
+            .domain([0, maxValue])
+            .range(gradient);
 
         for (let i of Object.entries(priceData)) {
             data["price"][i[0]] = i[1];
             // data["price"]["max"] = Math.max(data["price"]["max"], i[1]);
         }
+
+        console.log(data);
 
         let center = {};
         let projection = d3.geoAlbers().translate([w/3, h/2])
@@ -216,13 +224,14 @@ class schoolMap {
 
 
         }
-        drawData(data, "school");
+        drawData(data, "crime");
 
         var para = document.createElement("P");
         para.setAttribute("id", textElementID);
 
-        para.innerHTML = "From the graph, we can see that only a few points reside close to the line of best fit. " +
-            "Therefore there is only a weak association between the number of schools and the housing prices.";
+        para.innerHTML = "From the graph, we can see that the data points generally show a negative linear association. " +
+            "There is an association between the number of crime and the housing prices, " +
+            "as people prefer to live in more secure districts.";
         document.getElementById(scatterPlotID).appendChild(para);
         var textWidth = width * 1.4;
         document.getElementById(textElementID).style.width = textWidth + "px";
@@ -251,7 +260,7 @@ class schoolMap {
             .attr("transform", "translate(" + h / 6 + ", " + (colorKeyHeight + h / 6) + ")");
         for (var i = 0; i < gradient.length; i++) {
             colorKeySVG.append("rect")
-                .datum([maxValue + 1 - (i + 1) * 5])
+                .datum([maxValue - (i + 1) * maxValue / 5])
                 .attr("x", 0)
                 .attr("y", i * blockHeight)
                 .attr("width", colorKeyWidth)
@@ -262,7 +271,7 @@ class schoolMap {
                 });
         }
         var colorScale = d3.scaleLinear()
-            .domain([0, maxValue])
+            .domain([0, maxValue - 1])
             .range([colorKeyHeight, 0])
             .nice();
         colorKeySVG.append("g")
@@ -337,7 +346,7 @@ class schoolMap {
                 .style("pointer-events", "none")
                 .style('opacity', 0.70);
 
-            var priceForZipcode = data["school"][this.id];
+            var priceForZipcode = data["crime"][this.id];
             if (priceForZipcode) toolTipText = priceForZipcode;
             else toolTipText = "No data";
             toolTipG.append("text")
@@ -359,7 +368,7 @@ class schoolMap {
 
         function handleMouseOut() {
             // Clean up old tooltips
-            document.getElementById(theme + this.id + "dot").style.fill = color(data["school"][this.id]);
+            document.getElementById(theme + this.id + "dot").style.fill = color(data["crime"][this.id]);
             d3.select(this).style("opacity", 1);
             svg.selectAll('g.tooltip').transition()
                 .duration(100)
@@ -379,7 +388,7 @@ class schoolMap {
         }
 
         function mapFillFunct(d) {
-            var zipObject = data["school"][+d.properties.ZCTA5CE10];
+            var zipObject = data["crime"][+d.properties.ZCTA5CE10];
             if (zipObject) {
                 return color(zipObject);
             } else {
@@ -390,4 +399,4 @@ class schoolMap {
     }
 }
 
-module.exports = schoolMap;
+module.exports = crimeMap;

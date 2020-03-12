@@ -80,6 +80,17 @@
     display: flex;
 }
 
+#companyMap {
+    display: flex;
+}
+
+#busMap {
+    display: flex;
+}
+
+#crimeMap {
+    display: flex;
+}
 
 body {
     font-family: 'Open Sans', sans-serif;
