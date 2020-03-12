@@ -2,10 +2,11 @@ class groceryMap {
     constructor() {}
 
 
-    drawMap(d3, zipData, schoolData, priceData) {
-        var textElementID = "descriptionGrocery";
-        var scatterPlotID = "drawGrocery";
-        var mapID = "mapGrocery";
+    drawMap(d3, zipData, groceryData, priceData) {
+        var theme = "Grocery";
+        var textElementID = "description" + theme;
+        var scatterPlotID = "draw" + theme;
+        var mapID = "map" + theme;
 
         var element = document.getElementById(textElementID);
 
@@ -17,7 +18,7 @@ class groceryMap {
         }
         let h = document.documentElement.scrollHeight - 10;
         let w = document.documentElement.scrollWidth / 2;
-        let textOnDisplay = "Number of Schools";
+        let textOnDisplay = "Grocery Store Count";
         let priceText = "Average Housing Price (In USD)";
         let maxValue = 24;
         var loColorHiColor = ["#e3ecfc", "#173463"];
@@ -34,11 +35,11 @@ class groceryMap {
         var toolTipWidth = 60, toolTipHeight = 40;
         var toolTipText = "No data";
 
-        // let data = {"price":{"max":0}, "school":{"max":0}};
-        let data = {"price":{}, "school":{}};
-        for (let i of Object.entries(schoolData)) {
-            data["school"][i[1].zip] = i[1].total_public_count + i[1].total_private_count;
-            // data["school"]["max"] = Math.max(data["school"]["max"], i[1].total_public_count + i[1].total_private_count);
+        // let data = {"price":{"max":0}, "grocery":{"max":0}};
+        let data = {"price":{}, "grocery":{}};
+        for (let i of Object.entries(groceryData)) {
+            data["grocery"][i[1].zip] = i[1].total_count;
+            // data["grocery"]["max"] = Math.max(data["grocery"]["max"], i[1].total_public_count + i[1].total_private_count);
         }
 
         for (let i of Object.entries(priceData)) {
@@ -78,7 +79,7 @@ class groceryMap {
         // moves the 'group' element to the top left margin
         var svg2 = d3.select("#" + scatterPlotID).append("svg")
             .attr("width", width + margin.left + margin.right)
-            .attr("height", height * 1.4)
+            .attr("height", height * 1.5)
             .append("g")
             .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
@@ -156,7 +157,7 @@ class groceryMap {
             svg2.selectAll("dot")
                 .data(arr)
                 .enter().append("circle")
-                .attr("id", function(d) { return d.zipCode + "dot";})
+                .attr("id", function(d) { return theme + d.zipCode + "dot";})
                 .attr("r", 5)
                 .attr("fill", function(d) {
                     // console.log(d);
@@ -195,6 +196,7 @@ class groceryMap {
                 .attr("text-anchor", "end")
                 .attr("x", width)
                 .attr("y", height + margin.top)
+                .attr("font-size", "12px")
                 .text(textOnDisplay);
 
             // add the Y Axis
@@ -207,18 +209,20 @@ class groceryMap {
                 .attr("transform", "rotate(-90)")
                 .attr("y", -margin.left + 20)
                 .attr("x", -margin.top + 40)
+                .attr("font-size", "12px")
                 .text(priceText);
 
 
 
 
         }
-        drawData(data, "school");
+        drawData(data, "grocery");
 
         var para = document.createElement("P");
         para.setAttribute("id", textElementID);
 
-        para.innerHTML = "HELLO WORLD";
+        para.innerHTML = "From the graph, we can see that the data points appear scattered all over the plot. " +
+            "Therefore there is no obvious association between the number of grocery stores and the housing prices.";
         document.getElementById(scatterPlotID).appendChild(para);
         var textWidth = width * 1.4;
         document.getElementById(textElementID).style.width = textWidth + "px";
@@ -244,7 +248,7 @@ class groceryMap {
         // # .on("click", handleMouseClick);
         var colorKeyWidth = h / 60, blockHeight = h / 30, colorKeyHeight = blockHeight * gradient.length;
         var colorKeySVG = svg.append("g")
-            .attr("transform", "translate(" + h / 5 + ", " + (colorKeyHeight + h / 6) + ")");
+            .attr("transform", "translate(" + h / 6 + ", " + (colorKeyHeight + h / 6) + ")");
         for (var i = 0; i < gradient.length; i++) {
             colorKeySVG.append("rect")
                 .datum([maxValue + 1 - (i + 1) * 5])
@@ -285,6 +289,7 @@ class groceryMap {
             .attr("dy", "1em")
             .attr("fill", darkgrey)
             .attr("class", "unselectable")
+            .attr("font-size", "12px")
             .text(textOnDisplay);
 
         colorKeySVG.append("rect")
@@ -307,7 +312,15 @@ class groceryMap {
 
         function handleMouseOver() {
             console.log(this.id);
-            document.getElementById(this.id + "dot").style.fill = "#f95e0a";
+            var element = document.getElementById(theme + this.id + "dot");
+
+            //If it isn't "undefined" and it isn't "null", then it exists.
+            if(typeof(element) != 'undefined' && element != null){
+                // alert('Element exists!');
+                document.getElementById(theme + this.id + "dot").style.fill = "#f95e0a";
+
+            }
+
             d3.select(this).style("opacity", .7);
             // Clean up old tooltips
             svg.selectAll('g.tooltip').remove();
@@ -324,7 +337,7 @@ class groceryMap {
                 .style("pointer-events", "none")
                 .style('opacity', 0.70);
 
-            var priceForZipcode = data["school"][this.id];
+            var priceForZipcode = data["grocery"][this.id];
             if (priceForZipcode) toolTipText = priceForZipcode;
             else toolTipText = "No data";
             toolTipG.append("text")
@@ -346,7 +359,7 @@ class groceryMap {
 
         function handleMouseOut() {
             // Clean up old tooltips
-            document.getElementById(this.id + "dot").style.fill = color(data["school"][this.id]);
+            document.getElementById(theme + this.id + "dot").style.fill = color(data["grocery"][this.id]);
             d3.select(this).style("opacity", 1);
             svg.selectAll('g.tooltip').transition()
                 .duration(100)
@@ -366,7 +379,7 @@ class groceryMap {
         }
 
         function mapFillFunct(d) {
-            var zipObject = data["school"][+d.properties.ZCTA5CE10];
+            var zipObject = data["grocery"][+d.properties.ZCTA5CE10];
             if (zipObject) {
                 return color(zipObject);
             } else {
