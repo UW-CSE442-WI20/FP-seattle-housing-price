@@ -5,6 +5,9 @@ class schoolMap {
     drawMap(d3, zipData, schoolData, priceData) {
         let h = document.documentElement.scrollHeight - 10;
         let w = document.documentElement.scrollWidth / 2;
+        let textOnDisplay = "Number of Schools";
+        let priceText = "Average Housing Price (In USD)";
+        let maxValue = 24;
         var loColorHiColor = ["#e3ecfc", "#173463"];
         var gradient = ["#E5F6FF", "#ACCEE1", "#73A7C4", "#3A7FA7", "#02588A"];
         var strokeColor = "white";
@@ -13,20 +16,24 @@ class schoolMap {
         var strokeHighlightWidth = 3;
         var darkgrey = "#4c4c4c";
         var color = d3.scaleQuantize()
-            .domain([0, 30])
+            .domain([0, maxValue + 1])
             .range(gradient);
         var toolTipG;
-        var toolTipWidth = 150, toolTipHeight = 50;
+        var toolTipWidth = 60, toolTipHeight = 40;
         var toolTipText = "No data";
 
-        let data = {"price":{"max":0}, "school":{"max":0}};
-        for (let i of Object.entries(priceData)) {
-            data["price"][i[0]] = i[1];
-            data["price"]["max"] = Math.max(data["price"]["max"], i[1]);
-        }
+        var toolTipG2;
+
+        // let data = {"price":{"max":0}, "school":{"max":0}};
+        let data = {"price":{}, "school":{}};
         for (let i of Object.entries(schoolData)) {
             data["school"][i[1].zip] = i[1].total_public_count + i[1].total_private_count;
-            data["school"]["max"] = Math.max(data["school"]["max"], i[1].total_public_count + i[1].total_private_count);
+            // data["school"]["max"] = Math.max(data["school"]["max"], i[1].total_public_count + i[1].total_private_count);
+        }
+
+        for (let i of Object.entries(priceData)) {
+            data["price"][i[0]] = i[1];
+            // data["price"]["max"] = Math.max(data["price"]["max"], i[1]);
         }
 
         let center = {};
@@ -38,13 +45,19 @@ class schoolMap {
         let svg = d3.select("#mapSchool").append("svg").attr("width", w).attr("height", h);
 
         // set the dimensions and margins of the graph
-        var margin = {top: 20, right: 20, bottom: 30, left: w / 2},
+        var margin = {top: 50, right: 300, bottom: 500, left: 100},
             width = w - margin.left - margin.right,
             height = h - margin.top - margin.bottom;
+        // console.log("width", width, "height", height);
 
         // set the ranges
         var x = d3.scaleLinear().range([0, width]);
         var y = d3.scaleLinear().range([height, 0]);
+
+        // define the line
+        // var valueline = d3.line()
+        //     .x(function(d) { return x(d.keyword); })
+        //     .y(function(d) { return y(d.price); });
 
         var div = d3.select("body").append("div")
             .attr("class", "tooltip")
@@ -53,19 +66,144 @@ class schoolMap {
         // append the svg obgect to the body of the page
         // appends a 'group' element to 'svg'
         // moves the 'group' element to the top left margin
-        // var svg2 = d3.select("#mapSchool").append("svg")
-        //     .attr("width", width + margin.left + margin.right)
-        //     .attr("height", height + margin.top + margin.bottom)
-        //     .append("g")
-        //     .attr("transform",
-        //         "translate(" + margin.left + "," + margin.top + ")");
-        //
-        // function drawData(data) {
-        //     data.forEach(function(d) {
-        //
-        //     })
-        // }
+        var svg2 = d3.select("#drawSchool").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
 
+
+        function drawData(data, keyword) {
+            var x_data = [];
+            var y_data = [];
+            var arr = [];
+            var x_mean = 0;
+            var y_mean = 0;
+            var arr_length = Object.keys(data[keyword]).length;
+            var term1 = 0;
+            var term2 = 0;
+            var i = 0;
+
+            for (const [key, value] of Object.entries(data[keyword])) {
+                // console.log(key, keyword + ": ", value, "price: ", data['price'][key]);
+                x_data[i] = value;
+                y_data[i] = data['price'][key];
+                x_mean += value;
+                y_mean += data['price'][key];
+                i += 1;
+            }
+            x_mean /= arr_length;
+            y_mean /= arr_length;
+
+            // calculate coefficients
+            var xr = 0;
+            var yr = 0;
+            for (const [key, value] of Object.entries(data[keyword])) {
+                xr = value - x_mean;
+                yr = data['price'][key] - y_mean;
+                term1 += xr * yr;
+                term2 += xr * xr;
+
+            }
+            var b1 = term1 / term2;
+            var b0 = y_mean - (b1 * x_mean);
+            var yhat = [];
+            // fit line using coeffs
+            for (i = 0; i < arr_length; i++) {
+                yhat.push(b0 + (x_data[i] * b1));
+            }
+            console.log(yhat);
+
+            i = 0;
+            for (const [key, value] of Object.entries(data[keyword])) {
+                // console.log(key, keyword + ": ", value, "price: ", data['price'][key]);
+                arr.push({
+                    "zipCode": key,
+                    keyword: value,
+                    'price': data['price'][key],
+                    'price_hat': yhat[i]
+                });
+                i++;
+            }
+            // console.log(arr);
+            // scale the range of the data
+            x.domain([0, d3.max(arr, function(d) { return d.keyword; })]);
+            y.domain([0, d3.max(arr, function(d) { return d.price; })]);
+
+            var line = d3.line()
+                .x(function(d) {
+                    return x(d.keyword);
+                })
+                .y(function(d) {
+                    return y(d.price_hat);
+                });
+
+            svg2.append("path")
+                .datum(arr)
+                .attr("class", "line")
+                .attr("d", line);
+
+            // add the dots with tooltips
+            svg2.selectAll("dot")
+                .data(arr)
+                .enter().append("circle")
+                .attr("id", function(d) { return d.zipCode + "dot";})
+                .attr("r", 5)
+                .attr("fill", function(d) {
+                    // console.log(d);
+                    return color(d.keyword);
+                })
+                .attr("cx", function(d) { return x(d.keyword); })
+                .attr("cy", function(d) { return y(d.price); })
+                .on("mouseover", function(d) {
+                    d3.select(this).style("fill", "#f95e0a");
+                    // svg2.select(d).attr("fill", "#f95e0a");
+                    document.getElementById(d.zipCode).style.fill = "#f95e0a";
+                    div.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    div .html(
+                        d.zipCode + "<br/>" + d.keyword +
+                        "<br/>"  + "<b>" + "$" + d.price + "<b/>")
+                        .style("left", (d3.event.pageX - 15) + "px")
+                        .style("top", (d3.event.pageY - 60) + "px");
+
+                })
+                .on("mouseout", function(d) {
+                    document.getElementById(d.zipCode).style.fill = color(d.keyword);
+                    d3.select(this).style("fill", color(d.keyword));
+                    div.transition()
+                        .duration(200)
+                        .style("opacity", 0);
+                });
+            // add the X Axis
+            svg2.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x));
+
+            // Add X axis label:
+            svg2.append("text")
+                .attr("text-anchor", "end")
+                .attr("x", width)
+                .attr("y", height + margin.top)
+                .text(textOnDisplay);
+
+            // add the Y Axis
+            svg2.append("g")
+                .call(d3.axisLeft(y));
+
+            // Y axis label:
+            svg2.append("text")
+                .attr("text-anchor", "end")
+                .attr("transform", "rotate(-90)")
+                .attr("y", -margin.left + 20)
+                .attr("x", -margin.top + 40)
+                .text(priceText);
+
+
+        }
+        drawData(data, "school");
 
 
         // let svg1 = d3.select("#compare").append("svg").attr("width", w).attr("height", h);
@@ -75,21 +213,22 @@ class schoolMap {
                 return mapFillFunct(d);
             })
             .style("stroke", "white")
+            .style("stroke-width", 2)
             .attr("id", function(d) {
                 let zip = d.properties.ZCTA5CE10;
                 center[zip] = path.centroid(d);
-                return zip;
+                return zip.toString();
             })
             .on("mouseover", handleMouseOver)
             .on("mouseout", handleMouseOut)
             .on("mousemove", handleMouseMove);
             // # .on("click", handleMouseClick);
-        var colorKeyWidth = 20, colorKeyHeight = 325, blockHeight = 40;
+        var colorKeyWidth = h / 60, blockHeight = h / 30, colorKeyHeight = blockHeight * gradient.length;
         var colorKeySVG = svg.append("g")
-            .attr("transform", "translate(10, " + (h - colorKeyHeight - 10) + ")");
+            .attr("transform", "translate(" + h / 5 + ", " + (colorKeyHeight + h / 7) + ")");
         for (var i = 0; i < gradient.length; i++) {
             colorKeySVG.append("rect")
-                .datum([30 - (i + 1) * 6])
+                .datum([maxValue + 1 - (i + 1) * 5])
                 .attr("x", 0)
                 .attr("y", i * blockHeight)
                 .attr("width", colorKeyWidth)
@@ -100,8 +239,8 @@ class schoolMap {
                 });
         }
         var colorScale = d3.scaleLinear()
-            .domain([0, 30])
-            .range([200, 0])
+            .domain([0, maxValue])
+            .range([colorKeyHeight, 0])
             .nice();
         colorKeySVG.append("g")
             .call(d3.axisRight(colorScale)
@@ -113,7 +252,7 @@ class schoolMap {
             .attr("transform", "translate(" + colorKeyWidth + ", 0)")
             .selectAll("text")
             .attr("class", "unselectable")
-            .attr("font-family", "Open Sans")
+            // .attr("font-family", "Open Sans")
             .attr('font-size', "12px")
             .attr("fill", darkgrey)
             .attr("dx", "2px");
@@ -127,21 +266,21 @@ class schoolMap {
             .attr("dy", "1em")
             .attr("fill", darkgrey)
             .attr("class", "unselectable")
-            .text("Number of Schools");
+            .text(textOnDisplay);
 
         colorKeySVG.append("rect")
             .attr("x", 0)
-            .attr("y", 225)
+            .attr("y", colorKeyHeight)
             .attr("width", colorKeyWidth)
             .attr("height", colorKeyWidth)
             .attr("fill", "black");
 
         colorKeySVG.append("text")
-            .attr("x", 30)
-            .attr("y", 235)
+            .attr("x", h / 30)
+            .attr("y", colorKeyHeight + 10)
             .attr("class", "unselectable")
             .attr("dominant-baseline", "central")
-            .attr("font-family", "Open Sans")
+            // .attr("font-family", "Open Sans")
             .attr("font-size", "12px")
             .text("no data");
 
@@ -149,7 +288,7 @@ class schoolMap {
 
         function handleMouseOver() {
             console.log(this.id);
-
+            document.getElementById(this.id + "dot").style.fill = "#f95e0a";
             d3.select(this).style("opacity", .7);
             // Clean up old tooltips
             svg.selectAll('g.tooltip').remove();
@@ -162,9 +301,9 @@ class schoolMap {
                 .style('width', toolTipWidth)
                 .style('height', toolTipHeight)
                 .style('fill', 'white')
-                .style('stroke', 'black')
+                .style('', 'black')
                 .style("pointer-events", "none")
-                .style('opacity', 0.85);
+                .style('opacity', 0.70);
 
             var priceForZipcode = data["school"][this.id];
             if (priceForZipcode) toolTipText = priceForZipcode;
@@ -173,13 +312,13 @@ class schoolMap {
                 .style("pointer-events", "none")
                 .attr("dy", "1.2em")
                 .attr("dx", "6")
-                .attr("font-family", "Open Sans")
-                .attr("font-size", "22px")
+                // .attr("font-family", "Open Sans")
+                .attr("font-size", "14px")
                 .text(this.id);
             toolTipG.append("text")
                 .style("pointer-events", "none")
-                .attr("font-family", "Open Sans")
-                .attr("font-size", "24px")
+                // .attr("font-family", "Open Sans")
+                .attr("font-size", "14px")
                 .style("font-weight", 400)
                 .attr("dy", "2.4em")
                 .attr("dx", "6")
@@ -188,8 +327,12 @@ class schoolMap {
 
         function handleMouseOut() {
             // Clean up old tooltips
+            document.getElementById(this.id + "dot").style.fill = color(data["school"][this.id]);
             d3.select(this).style("opacity", 1);
-            svg.selectAll('g.tooltip').remove();
+            svg.selectAll('g.tooltip').transition()
+                .duration(100)
+                .style("opacity", 0);
+            // svg.selectAll('g.tooltip').remove();
         }
 
         function handleMouseMove() {

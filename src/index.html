@@ -7,18 +7,30 @@
     <link rel="stylesheet" href="fullpage.css">
   </head>
   <body>
-    <h1>My Webpage</h1>
     <div id="fullpage">
       <div class="section"> somesection </div>
       <div class="section"> somesection </div>
-      <div class="section"> somesection </div>
+      <div class="section" id="gdp">
+        <div class="row">
+          <select id="citySelect">
+            <option value="Seattle" selected>Seattle</option>
+            <option value="San Francisco">San Francisco</option>
+            <option value="New York">New York</option>
+            <option value="Los Angeles">Los Angeles</option>
+          </select>
+        </div>
+        <div id="gdpMap"></div>
+      </div>
       <div class="section" id="schoolMap">
         <div class="column">
         <div id="mapSchool"></div>
-      </div>
+        </div>
+        <div class="column">
+          <div id="drawSchool"></div>
+        </div>
       </div>
       <div class="section" id="final1">
-        <div class="row">
+        <div class="leftcolumn">
           Enter zip code
           <input type="text" id="zipChosen">
           Choose radius
@@ -30,11 +42,9 @@
           <button id="zipSubmit">submit</button>
           <br>
           <button id="chooseReset">reset</button>
-        </div>
-        <div class="column">
           <div id="map"></div>
         </div>
-        <div class="column">
+        <div class="rightcolumn">
           <div id="compare"></div>
         </div>
       </div>

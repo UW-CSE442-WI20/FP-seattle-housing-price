@@ -83,15 +83,17 @@ const linkData = require('./data/link_stations_by_zip_code.json');
 const restData = require('./data/restaurants_by_zip_code.json');
 const schoolData = require('./data/schools_by_zip_code.json');
 const zipData = require('./data/zipcode.json');
+const gdpData = require('./data/gdp_vs_avg_housing');
+const d3 = require('d3');
 
 const zipMap = require('./zipMap');
 const zipMapInstance = new zipMap();
-const d3 = require('d3');
 zipMapInstance.drawMap(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
 
 const schoolMap = require('./schoolMap');
 const schoolMapInstance = new schoolMap();
 schoolMapInstance.drawMap(d3, zipData, schoolData, priceData);
+
 
 const bestZip = require('./bestZip');
 const bestZipInstance = new bestZip();
@@ -99,8 +101,17 @@ bestZipInstance.drawGraph(d3, zipData, busData, companyData, crimeData, groceryD
 
 window.addEventListener("resize", doSomething);
 
-function doSomething() {
+const gdp = require('./gdp');
+const gdpInstance = new gdp();
+gdpInstance.drawMap(d3, gdpData);
+
+window.addEventListener("resize", redraw);
+
+
+function redraw() {
     d3.selectAll("svg").remove();
     zipMapInstance.drawMap(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
     schoolMapInstance.drawMap(d3, zipData, schoolData, priceData);
+    gdpInstance.drawMap(d3, gdpData);
+    bestZipInstance.drawGraph(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
 }

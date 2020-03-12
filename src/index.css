@@ -2,7 +2,7 @@
     display: table-row;
 }
 .column {
-    float: left;
+    /*float: left;*/
     width: 50%;
 }
 
@@ -55,3 +55,56 @@
 /* #search {
     display: inline-block;
 } */
+
+.leftcolumn {
+    width: 30%;
+}
+
+.rightcolumn {
+    width: 70%;
+}
+
+#final1 {
+    display: flex;
+}
+
+#schoolMap {
+    display: flex;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    opacity: 1;
+    font-size: 16px;
+    /*background-color: #212938; //Dark Mode
+    color: #ffffff;*/
+}
+
+h1 {
+    font-size: 60px;
+    font-weight: 300;
+    color: #40629f;
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 60px;
+    height: 42px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+}
+
+#priority-list ul {
+    position: absolute;
+}
+
+.line {
+    fill: none;
+    stroke: #E4002B;
+    stroke-width: 2px;
+}
