@@ -4,10 +4,10 @@ var myFullpage = new fullpage('#fullpage', {
 	//Navigation
     menu: '#menu',
     lockAnchors: false,
-    anchors:['firstPage', 'secondPage',  'thirdPage', 'fourthPage', 'fifthPage'],
+    anchors:['firstPage', 'secondPage',  'thirdPage', 'fourthPage', 'fifthPage', 'sixthPage'],
     navigation: true,
     navigationPosition: 'right',
-    navigationTooltips: ['first', 'second', 'third', 'fourth', 'fifth'],
+    navigationTooltips: ['first', 'second', 'third', 'fourth', 'fifth', 'sixth'],
     // showActiveTooltip: false,
     // slidesNavigation: true,
     // slidesNavPosition: 'bottom',
@@ -94,9 +94,16 @@ const schoolMap = require('./schoolMap');
 const schoolMapInstance = new schoolMap();
 schoolMapInstance.drawMap(d3, zipData, schoolData, priceData);
 
+
 const groceryMap = require('./groceryMap');
 const groceryMapInstance = new groceryMap();
 groceryMapInstance.drawMap(d3, zipData, schoolData, priceData);
+
+
+const bestZip = require('./bestZip');
+const bestZipInstance = new bestZip();
+bestZipInstance.drawGraph(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
+
 
 const gdp = require('./gdp');
 const gdpInstance = new gdp();
@@ -104,10 +111,14 @@ gdpInstance.drawMap(d3, gdpData);
 
 window.addEventListener("resize", redraw);
 
+
 function redraw() {
     d3.selectAll("svg").remove();
     zipMapInstance.drawMap(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
     schoolMapInstance.drawMap(d3, zipData, schoolData, priceData);
     gdpInstance.drawMap(d3, gdpData);
+
     groceryMapInstance.drawMap(d3, zipData, schoolData, priceData);
+
+    bestZipInstance.drawGraph(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
 }
