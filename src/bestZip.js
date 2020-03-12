@@ -407,7 +407,7 @@ class bestZip {
                 top: 20,
                 right: 100,
                 bottom: 30,
-                left: 100
+                left: 110
             },
             width = 500 - margin.left - margin.right,
             height = 200 - margin.top - margin.bottom;
