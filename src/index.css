@@ -128,3 +128,7 @@ div.tooltip {
     stroke: #E4002B;
     stroke-width: 2px;
 }
+
+b {
+    font-size: 0.7em;
+}

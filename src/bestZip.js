@@ -90,11 +90,11 @@ class bestZip {
                 document.getElementById(bestZipCode+"bestZip").style["stroke"] = "black";
                 $('#'+bestZipCode+"bestZip").parent().append($('#'+bestZipCode+"bestZip"));
                 if (whetherTextShown) {
-                    $("#zipH4").text("Best Zip Code: " + bestZipCode).fadeIn(1000);
+                    $("#zipH4").text("Your Best Match District: " + bestZipCode).fadeIn(1000);
                     whetherTextShown = false;
                 } else {
                     $("#zipH4").fadeOut(500, function() {
-                        $("#zipH4").text("Best Zip Code: " + bestZipCode).fadeIn(500);
+                        $("#zipH4").text("Your Best Match District: " + bestZipCode).fadeIn(500);
                      })
                 }
                 var data_best = getZipAnaData(bestZipCode, parameters);
@@ -405,9 +405,9 @@ class bestZip {
 
             var margin = {
                 top: 20,
-                right: 100,
+                right: 130,
                 bottom: 30,
-                left: 110
+                left: 130
             },
             width = 500 - margin.left - margin.right,
             height = 200 - margin.top - margin.bottom;
@@ -478,7 +478,10 @@ class bestZip {
             // .attr("x", 10)
             .attr("x", width + 10)
             .text(function(d) {
-                return +d.value
+                if (d.yAxis == "price") {
+                    return "$0";
+                }
+                return 0;
             })
             .transition()
             .duration(2000)
@@ -493,7 +496,10 @@ class bestZip {
                 var self = this
                 var i = d3.interpolateNumber(0, +d.value);
                 return function(t) {
-                return d3.select(self).text(~~i(t));
+                    if (d.yAxis == "price") {
+                        return d3.select(self).text("$"+~~i(t));
+                    }
+                    return d3.select(self).text(~~i(t));
                 }
             });
             
@@ -510,6 +516,9 @@ class bestZip {
             .attr("x", -10)
             .attr("text-anchor", "end")
             .text(function(d) {
+                if (d.yAxis == "transportation") {
+                    return "bus/link station";
+                }
                 return d.yAxis
             });
 
