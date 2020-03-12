@@ -4,10 +4,10 @@ var myFullpage = new fullpage('#fullpage', {
 	//Navigation
     menu: '#menu',
     lockAnchors: false,
-    anchors:['firstPage', 'secondPage',  'thirdPage', 'fourthPage', 'fifthPage'],
+    anchors:['firstPage', 'secondPage',  'thirdPage', 'fourthPage', 'fifthPage', 'sixthPage'],
     navigation: true,
     navigationPosition: 'right',
-    navigationTooltips: ['first', 'second', 'third', 'fourth', 'fifth'],
+    navigationTooltips: ['first', 'second', 'third', 'fourth', 'fifth', 'sixth'],
     // showActiveTooltip: false,
     // slidesNavigation: true,
     // slidesNavPosition: 'bottom',
@@ -92,6 +92,10 @@ zipMapInstance.drawMap(d3, zipData, busData, companyData, crimeData, groceryData
 const schoolMap = require('./schoolMap');
 const schoolMapInstance = new schoolMap();
 schoolMapInstance.drawMap(d3, zipData, schoolData, priceData);
+
+const bestZip = require('./bestZip');
+const bestZipInstance = new bestZip();
+bestZipInstance.drawGraph(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
 
 window.addEventListener("resize", doSomething);
 

@@ -16,8 +16,10 @@
   "dependencies": {
     "baseui": "^9.62.0",
     "d3": "^5.15.0",
+    "jQuery": "^1.7.4",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "sortablejs": "^1.10.2",
     "styletron-engine-atomic": "^1.4.6",
     "styletron-react": "^5.2.7"
   }

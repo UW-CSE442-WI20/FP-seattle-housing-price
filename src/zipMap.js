@@ -8,6 +8,7 @@ class ZipMap {
         let data = {"bus":{"max":0}, "company":{"max":0}, "crime":{"max":0}, "grocery":{"max":0},
             "price":{"max":0}, "link":{"max":0}, "rest":{"max":0}, "school":{"max":0}};
         for (let i of Object.entries(busData)) {
+            console.log
             data["bus"][i[1].zip] = i[1].total_count;
             data["bus"]["max"] = Math.max(data["bus"]["max"], i[1].total_count);
         }
