@@ -245,7 +245,7 @@ class schoolMap {
             // # .on("click", handleMouseClick);
         var colorKeyWidth = h / 60, blockHeight = h / 30, colorKeyHeight = blockHeight * gradient.length;
         var colorKeySVG = svg.append("g")
-            .attr("transform", "translate(" + h / 5 + ", " + (colorKeyHeight + h / 6) + ")");
+            .attr("transform", "translate(" + h / 6 + ", " + (colorKeyHeight + h / 6) + ")");
         for (var i = 0; i < gradient.length; i++) {
             colorKeySVG.append("rect")
                 .datum([maxValue + 1 - (i + 1) * 5])
