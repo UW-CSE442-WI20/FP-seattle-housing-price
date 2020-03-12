@@ -22,7 +22,8 @@ class busMap {
         let priceText = "Average Housing Price (In USD)";
         let maxValue = 24;
         var loColorHiColor = ["#e3ecfc", "#173463"];
-        var gradient = ["#ACCEE1", "#73A7C4", "#3A7FA7", "#02588A"];
+        // var gradient = ["#ACCEE1", "#73A7C4", "#3A7FA7", "#02588A"];
+        var gradient = ["#CFF4D2", "#7BE495", "#56c596", "#329D9C"];
         var strokeColor = "white";
         var strokeHighlightColor = "#F6A600";
         var strokeWidth = 2;
@@ -306,7 +307,7 @@ class busMap {
             .attr("y", colorKeyHeight)
             .attr("width", colorKeyWidth)
             .attr("height", colorKeyWidth)
-            .attr("fill", "black");
+            .attr("fill", "lightgrey");
 
         colorKeySVG.append("text")
             .attr("x", h / 30)
@@ -392,7 +393,7 @@ class busMap {
             if (zipObject) {
                 return color(zipObject);
             } else {
-                return "black";
+                return "lightgrey";
             }
         }
 
