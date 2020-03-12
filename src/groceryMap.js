@@ -1,11 +1,11 @@
-class schoolMap {
+class groceryMap {
     constructor() {}
 
 
     drawMap(d3, zipData, schoolData, priceData) {
-        var textElementID = "description";
-        var scatterPlotID = "drawSchool";
-        var mapID = "mapSchool";
+        var textElementID = "descriptionGrocery";
+        var scatterPlotID = "drawGrocery";
+        var mapID = "mapGrocery";
 
         var element = document.getElementById(textElementID);
 
@@ -218,8 +218,7 @@ class schoolMap {
         var para = document.createElement("P");
         para.setAttribute("id", textElementID);
 
-        para.innerHTML = "From the graph, we can see that only a few points reside close to the line of best fit. " +
-            "Therefore there is only a weak association between the number of schools and the housing prices.";
+        para.innerHTML = "HELLO WORLD";
         document.getElementById(scatterPlotID).appendChild(para);
         var textWidth = width * 1.4;
         document.getElementById(textElementID).style.width = textWidth + "px";
@@ -242,7 +241,7 @@ class schoolMap {
             .on("mouseover", handleMouseOver)
             .on("mouseout", handleMouseOut)
             .on("mousemove", handleMouseMove);
-            // # .on("click", handleMouseClick);
+        // # .on("click", handleMouseClick);
         var colorKeyWidth = h / 60, blockHeight = h / 30, colorKeyHeight = blockHeight * gradient.length;
         var colorKeySVG = svg.append("g")
             .attr("transform", "translate(" + h / 5 + ", " + (colorKeyHeight + h / 6) + ")");
@@ -378,4 +377,4 @@ class schoolMap {
     }
 }
 
-module.exports = schoolMap;
+module.exports = groceryMap;

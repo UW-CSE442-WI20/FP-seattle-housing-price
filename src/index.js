@@ -94,6 +94,10 @@ const schoolMap = require('./schoolMap');
 const schoolMapInstance = new schoolMap();
 schoolMapInstance.drawMap(d3, zipData, schoolData, priceData);
 
+const groceryMap = require('./groceryMap');
+const groceryMapInstance = new groceryMap();
+groceryMapInstance.drawMap(d3, zipData, schoolData, priceData);
+
 const gdp = require('./gdp');
 const gdpInstance = new gdp();
 gdpInstance.drawMap(d3, gdpData);
@@ -105,4 +109,5 @@ function redraw() {
     zipMapInstance.drawMap(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
     schoolMapInstance.drawMap(d3, zipData, schoolData, priceData);
     gdpInstance.drawMap(d3, gdpData);
+    groceryMapInstance.drawMap(d3, zipData, schoolData, priceData);
 }
