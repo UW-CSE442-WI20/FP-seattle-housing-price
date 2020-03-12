@@ -362,7 +362,10 @@ class restaurantMap {
 
         function handleMouseOut() {
             // Clean up old tooltips
-            document.getElementById(theme + this.id + "dot").style.fill = color(data["rest"][this.id]);
+            var dot = document.getElementById(theme + this.id + "dot");
+            if (dot) {
+                dot.style.fill = color(data["rest"][this.id]);
+            }
             d3.select(this).style("opacity", 1);
             svg.selectAll('g.tooltip').transition()
                 .duration(100)
