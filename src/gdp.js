@@ -31,11 +31,11 @@ class gdp {
                         yPo.house.push(h/2 - j[1].housing/houseMax*h/3);
                     }
                     for (let j = 0; j < 17; j++) {
-                        svg.append("circle").attr("cx", xPo).attr("cy", yPo.gdp[j]).transition().delay(800*j).duration(1).attr("r", w/300).style("fill", "#00FFCC");
-                        svg.append("circle").attr("cx", xPo).attr("cy", yPo.house[j]).transition().delay(800*j).duration(1).attr("r", w/300).style("fill", "#66CCFF");
+                        svg.append("circle").attr("cx", xPo).attr("cy", yPo.gdp[j]).transition().delay(80*j).duration(1).attr("r", w/300).style("fill", "#00FFCC");
+                        svg.append("circle").attr("cx", xPo).attr("cy", yPo.house[j]).transition().delay(80*j).duration(1).attr("r", w/300).style("fill", "#66CCFF");
                         if (j !== 16) {
-                            svg.append("line").attr("x1", xPo).attr("y1",yPo.gdp[j]).attr("x2", xPo+4/80*w).attr("y2", yPo.gdp[j+1]).transition().delay(800*j).style("stroke", "#00FFCC");
-                            svg.append("line").attr("x1", xPo).attr("y1",yPo.house[j]).attr("x2", xPo+4/80*w).attr("y2", yPo.house[j+1]).transition().delay(800*j).style("stroke", "#66CCFF");
+                            svg.append("line").attr("x1", xPo).attr("y1",yPo.gdp[j]).attr("x2", xPo+4/80*w).attr("y2", yPo.gdp[j+1]).transition().delay(80*j).style("stroke", "#00FFCC");
+                            svg.append("line").attr("x1", xPo).attr("y1",yPo.house[j]).attr("x2", xPo+4/80*w).attr("y2", yPo.house[j+1]).transition().delay(80*j).style("stroke", "#66CCFF");
                         }
                         xPo += w/20;
                     }
@@ -49,7 +49,7 @@ class gdp {
                         if (i % 2 === 0) {
                             let year = 2001 + i/2;
                             words.push("Year: " + year);
-                            words.push("GDP: " + dat[year].gdp_per_capita);
+                            words.push("GDP: $" + dat[year].gdp_per_capita);
                         } else {
                             let year = 2001 + (i-1)/2;
                             words.push("Year: " + year);
