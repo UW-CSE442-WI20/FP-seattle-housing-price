@@ -177,7 +177,7 @@ class crimeMap {
                 .on("mouseover", function(d) {
                     d3.select(this).style("fill", "#f95e0a");
                     // svg2.select(d).attr("fill", "#f95e0a");
-                    document.getElementById(d.zipCode).style.fill = "#f95e0a";
+                    document.getElementById(d.zipCode+theme).style.fill = "#f95e0a";
                     div.transition()
                         .duration(200)
                         .style("opacity", .9);
@@ -189,7 +189,7 @@ class crimeMap {
 
                 })
                 .on("mouseout", function(d) {
-                    document.getElementById(d.zipCode).style.fill = color(d.keyword);
+                    document.getElementById(d.zipCode+theme).style.fill = color(d.keyword);
                     d3.select(this).style("fill", color(d.keyword));
                     div.transition()
                         .duration(200)
@@ -250,7 +250,7 @@ class crimeMap {
             .attr("id", function(d) {
                 let zip = d.properties.ZCTA5CE10;
                 center[zip] = path.centroid(d);
-                return zip.toString();
+                return zip + theme;
             })
             .on("mouseover", handleMouseOver)
             .on("mouseout", handleMouseOut)
@@ -319,13 +319,13 @@ class crimeMap {
 
 
         function handleMouseOver() {
-            console.log(this.id);
-            var element = document.getElementById(theme + this.id + "dot");
+            var id = this.id.slice(0, 5);
+            var element = document.getElementById(theme + id + "dot");
 
             //If it isn't "undefined" and it isn't "null", then it exists.
             if(typeof(element) != 'undefined' && element != null){
                 // alert('Element exists!');
-                document.getElementById(theme + this.id + "dot").style.fill = "#f95e0a";
+                document.getElementById(theme + id + "dot").style.fill = "#f95e0a";
 
             }
 
@@ -345,7 +345,7 @@ class crimeMap {
                 .style("pointer-events", "none")
                 .style('opacity', 0.70);
 
-            var priceForZipcode = data["crime"][this.id];
+            var priceForZipcode = data["crime"][id];
             if (priceForZipcode) toolTipText = priceForZipcode;
             else toolTipText = "No data";
             toolTipG.append("text")
@@ -354,7 +354,7 @@ class crimeMap {
                 .attr("dx", "6")
                 // .attr("font-family", "Open Sans")
                 .attr("font-size", "14px")
-                .text(this.id);
+                .text(id);
             toolTipG.append("text")
                 .style("pointer-events", "none")
                 // .attr("font-family", "Open Sans")
@@ -367,9 +367,9 @@ class crimeMap {
 
         function handleMouseOut() {
             // Clean up old tooltips
-            var dot = document.getElementById(theme + this.id + "dot");
+            var dot = document.getElementById(theme + this.id.slice(0, 5) + "dot");
             if (dot) {
-                dot.style.fill = color(data["crime"][this.id]);
+                dot.style.fill = color(data["crime"][this.id.slice(0, 5)]);
             }
             d3.select(this).style("opacity", 1);
             svg.selectAll('g.tooltip').transition()
