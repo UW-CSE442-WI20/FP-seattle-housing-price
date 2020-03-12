@@ -99,8 +99,6 @@ const bestZip = require('./bestZip');
 const bestZipInstance = new bestZip();
 bestZipInstance.drawGraph(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
 
-window.addEventListener("resize", doSomething);
-
 const gdp = require('./gdp');
 const gdpInstance = new gdp();
 gdpInstance.drawMap(d3, gdpData);
