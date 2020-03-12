@@ -76,6 +76,11 @@
     display: flex;
 }
 
+#restaurantMap {
+    display: flex;
+}
+
+
 body {
     font-family: 'Open Sans', sans-serif;
     font-weight: 300;

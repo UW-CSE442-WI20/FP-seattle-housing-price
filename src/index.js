@@ -99,6 +99,10 @@ const groceryMap = require('./groceryMap');
 const groceryMapInstance = new groceryMap();
 groceryMapInstance.drawMap(d3, zipData, groceryData, priceData);
 
+const restaurantMap = require('./restaurantMap');
+const restaurantMapInstance = new restaurantMap();
+restaurantMapInstance.drawMap(d3, zipData, restData, priceData);
+
 
 const bestZip = require('./bestZip');
 const bestZipInstance = new bestZip();
@@ -119,6 +123,7 @@ function redraw() {
     gdpInstance.drawMap(d3, gdpData);
 
     groceryMapInstance.drawMap(d3, zipData, groceryData, priceData);
+    restaurantMapInstance.drawMap(d3, zipData, restData, priceData);
 
     bestZipInstance.drawGraph(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
 }
