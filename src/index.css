@@ -52,3 +52,9 @@ div.tooltip {
 #priority-list ul {
     position: absolute;
 }
+
+.line {
+    fill: none;
+    stroke: #E4002B;
+    stroke-width: 2px;
+}

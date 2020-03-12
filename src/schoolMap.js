@@ -75,25 +75,74 @@ class schoolMap {
 
 
         function drawData(data, keyword) {
+            var x_data = [];
+            var y_data = [];
             var arr = [];
+            var x_mean = 0;
+            var y_mean = 0;
+            var arr_length = Object.keys(data[keyword]).length;
+            var term1 = 0;
+            var term2 = 0;
+            var i = 0;
+
+            for (const [key, value] of Object.entries(data[keyword])) {
+                // console.log(key, keyword + ": ", value, "price: ", data['price'][key]);
+                x_data[i] = value;
+                y_data[i] = data['price'][key];
+                x_mean += value;
+                y_mean += data['price'][key];
+                i += 1;
+            }
+            x_mean /= arr_length;
+            y_mean /= arr_length;
+
+            // calculate coefficients
+            var xr = 0;
+            var yr = 0;
+            for (const [key, value] of Object.entries(data[keyword])) {
+                xr = value - x_mean;
+                yr = data['price'][key] - y_mean;
+                term1 += xr * yr;
+                term2 += xr * xr;
+
+            }
+            var b1 = term1 / term2;
+            var b0 = y_mean - (b1 * x_mean);
+            var yhat = [];
+            // fit line using coeffs
+            for (i = 0; i < arr_length; i++) {
+                yhat.push(b0 + (x_data[i] * b1));
+            }
+            console.log(yhat);
+
+            i = 0;
             for (const [key, value] of Object.entries(data[keyword])) {
                 // console.log(key, keyword + ": ", value, "price: ", data['price'][key]);
                 arr.push({
                     "zipCode": key,
                     keyword: value,
-                    'price': data['price'][key]
+                    'price': data['price'][key],
+                    'price_hat': yhat[i]
                 });
+                i++;
             }
             // console.log(arr);
             // scale the range of the data
             x.domain([0, d3.max(arr, function(d) { return d.keyword; })]);
             y.domain([0, d3.max(arr, function(d) { return d.price; })]);
 
-            // add the valueline path.
-            // svg2.append("path")
-            //     .data([arr])
-            //     .attr("class", "line")
-            //     .attr("d", valueline);
+            var line = d3.line()
+                .x(function(d) {
+                    return x(d.keyword);
+                })
+                .y(function(d) {
+                    return y(d.price_hat);
+                });
+
+            svg2.append("path")
+                .datum(arr)
+                .attr("class", "line")
+                .attr("d", line);
 
             // add the dots with tooltips
             svg2.selectAll("dot")
