@@ -80,7 +80,7 @@ class ZipMap {
                 }
                 let yPo = h/10;
                 if (choose.length === 1 || b === 1) {
-                    d3.select(this).style("fill", "#00FFCC");
+                    d3.select(this).style("fill", "#3995FC");
                     svg1.append("rect").attr("x", 3*w/10).attr("y", yPo).attr("height", h/5).attr("width", w/15).attr("id", "name").style("fill", "F7F7F7");
 
                     let dat = [];
@@ -109,7 +109,7 @@ class ZipMap {
                                 .attr("x", 3*w/10-1).attr("y", yPo).attr("height", h/50).attr("width", 1).attr("id", "rect1").style("fill", "black");
                         } else {
                             svg1.append("rect").attr("x", 3*w/10).attr("y", yPo).attr("height", h/50).transition().duration(600)
-                                .attr("x", 3*w/10-b).attr("y", yPo).attr("height", h/50).attr("width", b).attr("id", "rect1").style("fill", "#00FFCC");
+                                .attr("x", 3*w/10-b).attr("y", yPo).attr("height", h/50).attr("width", b).attr("id", "rect1").style("fill", "#3995FC");
                         }
                         svg1.append("text").attr("x", 3*w/10-b-datWidth[j]-w/200).attr("y", yPo+h/60).transition().delay(300).duration(1).text(a).attr("id", "rect1").attr("font-size", w/90);
                         score.push({xPo1: 3*w/10-b-a.toString().length*12, yPo: yPo+h/60, value1: a});
@@ -130,7 +130,7 @@ class ZipMap {
                     }
                     svg1.append("text").attr("x", w/5).attr("y", h/10-h/70).text(this.id).attr("id", "rect1").attr("font-size", w/90);
                 } else {
-                    d3.select(this).style("fill", "#66CCFF");
+                    d3.select(this).style("fill", "#C382F9");
                     let p = 0;
                     for (let i of Object.entries(data)) {
                         let a = i[1][this.id];
@@ -143,7 +143,7 @@ class ZipMap {
                                 .transition().duration(600).attr("width", 1).attr("id", "rect2").style("fill", "black");
                         } else {
                             svg1.append("rect").attr("x", 11*w/30).attr("y", yPo).attr("height", h/50)
-                                .transition().duration(600).attr("width", b).attr("id", "rect2").style("fill", "#66CCFF");
+                                .transition().duration(600).attr("width", b).attr("id", "rect2").style("fill", "#C382F9");
                         }
                         svg1.append("text").attr("x", 11*w/30+b+w/200).attr("y", yPo+h/60).transition().delay(300).duration(1).text(a).attr("id", "rect2").attr("font-size", w/90);
                         yPo += h/40;
