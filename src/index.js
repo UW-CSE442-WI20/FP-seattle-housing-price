@@ -4,10 +4,10 @@ var myFullpage = new fullpage('#fullpage', {
 	//Navigation
     menu: '#menu',
     lockAnchors: false,
-    anchors:['firstPage', 'secondPage',  'thirdPage', 'fourthPage', 'fifthPage', 'sixthPage'],
+    anchors:['firstPage', 'secondPage',  'thirdPage', 'fourthPage', 'fifthPage', 'sixthPage', 'sevenPage', 'eightPage', 'ninePage', 'tenPage', 'elevenpage', 'twelvePage'],
     navigation: true,
     navigationPosition: 'right',
-    navigationTooltips: ['first', 'second', 'third', 'fourth', 'fifth', 'sixth'],
+    navigationTooltips: ['Introduction', 'GDP', 'Company', 'Transportation', 'Crime', 'Restaurant', 'Grocery Store', 'School', 'Section Summary', 'Zip code Comparison', 'Best Area Search', 'Source & About Us'],
     // showActiveTooltip: false,
     // slidesNavigation: true,
     // slidesNavPosition: 'bottom',
