@@ -266,3 +266,14 @@ input[type=text] {
     box-shadow: 0px 0px 1px #777;
     cursor: pointer;
    }
+
+#bg {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    height: 812px;
+    opacity: .15;
+    
+    /* Preserve aspet ratio */
+    min-width: 100%;
+  }
