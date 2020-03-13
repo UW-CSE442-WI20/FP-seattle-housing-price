@@ -31,11 +31,11 @@ class gdp {
                         yPo.house.push(h/2 - j[1].housing/houseMax*h/3);
                     }
                     for (let j = 0; j < 17; j++) {
-                        svg.append("circle").attr("cx", xPo).attr("cy", yPo.gdp[j]).transition().delay(80*j).duration(1).attr("r", w/300).style("fill", "#00FFCC");
-                        svg.append("circle").attr("cx", xPo).attr("cy", yPo.house[j]).transition().delay(80*j).duration(1).attr("r", w/300).style("fill", "#66CCFF");
+                        svg.append("circle").attr("cx", xPo).attr("cy", yPo.gdp[j]).transition().delay(80*j).duration(1).attr("r", w/300).style("fill", "#3995FC");
+                        svg.append("circle").attr("cx", xPo).attr("cy", yPo.house[j]).transition().delay(80*j).duration(1).attr("r", w/300).style("fill", "#C382F9");
                         if (j !== 16) {
-                            svg.append("line").attr("x1", xPo).attr("y1",yPo.gdp[j]).attr("x2", xPo+4/80*w).attr("y2", yPo.gdp[j+1]).transition().delay(80*j).style("stroke", "#00FFCC");
-                            svg.append("line").attr("x1", xPo).attr("y1",yPo.house[j]).attr("x2", xPo+4/80*w).attr("y2", yPo.house[j+1]).transition().delay(80*j).style("stroke", "#66CCFF");
+                            svg.append("line").attr("x1", xPo).attr("y1",yPo.gdp[j]).attr("x2", xPo+4/80*w).attr("y2", yPo.gdp[j+1]).transition().delay(80*j).style("stroke", "#3995FC");
+                            svg.append("line").attr("x1", xPo).attr("y1",yPo.house[j]).attr("x2", xPo+4/80*w).attr("y2", yPo.house[j+1]).transition().delay(80*j).style("stroke", "#C382F9");
                         }
                         xPo += w/20;
                     }
@@ -81,8 +81,8 @@ class gdp {
                         svg.append("text").attr("x", xPo-w/80).attr("y", h/2+h/50).text(2001+j).attr("font-size", w/100);
                         xPo += w/20;
                     }
-                    svg.append("circle").attr("cx", 6.3*w/8-w/80).attr("cy", h/6-h/25).attr("r", w/500).style("fill", "#66CCFF");
-                    svg.append("circle").attr("cx", 7*w/8-w/80).attr("cy", h/6-h/25).attr("r", w/500).style("fill", "#00FFCC");
+                    svg.append("circle").attr("cx", 6.3*w/8-w/80).attr("cy", h/6-h/25).attr("r", w/500).style("fill", "#C382F9");
+                    svg.append("circle").attr("cx", 7*w/8-w/80).attr("cy", h/6-h/25).attr("r", w/500).style("fill", "#3995FC");
                     svg.append("text").attr("x", 6.3*w/8).attr("y", h/6-h/30).text("Housing prices").attr("font-size", w/120);
                     svg.append("text").attr("x", 7*w/8).attr("y", h/6-h/30).text("GDP").attr("font-size", w/120);
 
