@@ -2,13 +2,39 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>My Title</title>
+    <title>Seattle Housing Prices</title>
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="fullpage.css">
   </head>
   <body>
     <div id="fullpage">
-      <div class="section"> somesection </div>
+      <div class="section" style="display: table"> 
+        
+        <div class = "row" style="height:50px">
+          <div class="header">
+            <div class="title" style="margin-left: 1.5%; float: left; font-size: 56px; font-weight: 300;">Seattle Housing Prices</div>
+            <div class="subtitle" style="float: left; padding-top: 36px; padding-left: 60px; opacity: .7; font-size:18px">An exploration of Seattle's housing prices</div>
+          </div>
+        </div>
+        
+        <div class="row" style="width: 60%; margin-left: 7.5%; margin-right: 2.5%;height: 70%; display:table">
+          <div style="display: table-cell; vertical-align: middle; font-size: 18px;">
+            
+            <p style="font-weight: 300; font-size: 22px;">
+              Why is an apartment near Union Lake on sale with almost the same price as one big house in Renton? What factors contribute to the vast differences in housing prices? 
+            </p>
+            <br>
+
+          </br>
+            <p style="font-weight: 300; font-size: 18px;">
+               In this Explorable Explanation, we would like to gain insight into housing in Seattle and other metro cities in the US and analyze the factors of housing prices, such as traffic, crime stats, nearby supermarkets, and GDP per capita. 
+            (insert background picture aligned to the right)
+            </p>
+            
+                        
+          </div>
+        </div>
+      </div>
       <div class="section" id="gdp">
         <div class="row">
           <select id="citySelect">
@@ -18,7 +44,21 @@
             <option value="Los Angeles">Los Angeles</option>
           </select>
         </div>
-        <div id="gdpMap"></div>
+        <div id="gdpMap">
+          <div class="column" style="width: 65%; margin-left: 16%; margin-right: 16%;height: 100%; padding-top: 80px;display:table">
+            <div style="display: table-cell; vertical-align: middle; font-size: 18px;">
+              
+              <p style="font-weight: 400; font-size: 32px;">
+                Let’s first take a look at economic data. 
+              </p>
+              <p>
+                We can see from the following graph that all four metro cities demonstrate a reasonable correlation between GDP per capita and housing prices. For each city, both the GDP and the housing price curves take a downturn between 2008 and 2012. The curves resume the trend of steady increments after 2012 as the economy recovers. 
+
+              </p>
+                          
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="section" id="companyMap">
@@ -74,6 +114,56 @@
           <div id="drawSchool"></div>
         </div>
       </div>
+      
+      <div class="section" style="display: table; width: 100%">
+        
+
+
+        <div class="row" style="width: 70%; margin-left: 7.5%; margin-right: 2.5%;height: 70%; display:table">
+          <div style="display: table-cell; vertical-align: middle; font-size: 18px;">
+            
+            <p style="font-weight: 400; font-size: 32px;">
+              Now let’s bring all the factors together. 
+            </p>
+            <p>
+              From the above exploration, we’ve looked at the correlation of housing prices with respect to the individual factors. Nevertheless, in the real world, these factors tend to combine with each other and have an aggregated effect on people’s purchasing decisions and preferences. 
+
+            </p>
+
+            <br></br><br></br>
+
+            <p style="font-weight: 400; font-size: 32px;">
+              Next, let's dive into details and have some fun. 
+            </p>
+            
+                        
+          </div>
+        </div>
+
+        <div class="row" style="height:70%; width: 60%; margin-left: 7.5%; margin-right: 2.5%;">
+
+
+          <div class="column2" style=" width: 36%; margin-left: 7.5%; margin-right: 2%">
+          
+            <p>
+                <span style="font-weight: 400">On the next page,</span> you can find a helpful tool that enables easy comparison between different districts by visualizing the various factors. You may select a central point to start, such as your university, place of work, etc. You can also select a radius to limit the range of districts that you want to consider. Then, click on two districts, and our tool will display a factor-by-factor comparison. 
+            </p>
+           
+          </div>
+          <div class="column2" style=" width: 36%; margin-left: 8%; margin-right: 6%">
+            
+            <p>
+                <span style="font-weight: 400">And on the final page,</span> you can find another helpful tool that allows you to search for your desired district of housing by creating your own preference list. Drag and drop the different preference(s) using the provided list, hit search, and we will find your best match district in Seattle. 
+            </p>
+                     
+          </div>
+
+        </div>
+        
+      </div>
+      
+      
+      
       <div class="section" id="final1">
         <div class="leftcolumn">
           Enter zip code
@@ -97,7 +187,7 @@
         <div class="three-column">
           <div id="priority-list">
             <div class="col">
-              <h4>options</h4>
+              <h4>Options</h4>
               <div id="leftList" class="list-group">
                 <div data-id="price" class="list-group-item">Low housing price</div>
                 <div data-id="crime" class="list-group-item">Low crime rate</div>
@@ -109,21 +199,101 @@
               </div>
             </div>
             <div class="col">
-              <h4>preferences <b>(high to low)</b></h4>
+              <h4>Preferences <b>(high to low)</b></h4>
               <div id="rightList" class="list-group"></div>
             </div>
             
           </div>
         </div>
-        <button type="button" id="search">search</button>
+        <button type="button" id="search" style="margin-top: 80px;">search</button>
         <div class="three-column">
-          <div id="bestZipMap"></div>
+          <div id="bestZipMap" style="margin-right: 30px;"></div>
         </div>
         <div class="three-column">
 
           <div id="bestZipAnalysis">
           </div>
         </div>
+      </div>
+
+      <div class="section" style="display: table; width: 100%">
+        
+
+
+      
+
+        <div class="row" style="height:100%; width: 60%; margin-left: 7.5%; margin-right: 2.5%;">
+
+          <p style="font-weight: 400; font-size: 32px; margin-left: 7.5%;">
+            Source
+          </p>
+          <div class="column2" style=" width: 36%; margin-left: 7.5%; margin-right: 2%">
+            
+          </p>
+          <p style="font-weight: 400; font-size: 20px;">
+            Transportation Data:
+        </p>
+          <p>
+            Here's King County Metro data: <a href="https://www.kingcounty.gov/depts/transportation/metro/travel-options/bus/app-center/developer-resources.aspx" target="_blank">https://www.kingcounty.gov/depts/transportation/metro/travel-options/bus/app-center/developer-resources.aspx</a></br>
+          </p>
+          <p style="font-weight: 400; font-size: 20px;">
+            Crime Rates around the greater Seattle area:
+        </p>
+          <p>
+            The dataset we used can be found here: <a href="https://data.seattle.gov/Public-Safety/Crime-Data/4fs7-3vj5" target="_blank">https://data.seattle.gov/Public-Safety/Crime-Data/4fs7-3vj5</a></br>
+          </p>
+
+          <p style="font-weight: 400; font-size: 20px;">
+            Public school data:
+        </p>
+          <p>
+            The particular dataset can be found here: <a href="https://data-seattlecitygis.opendata.arcgis.com/datasets/public-schools/data" target="_blank">https://data-seattlecitygis.opendata.arcgis.com/datasets/public-schools/data</a></br>
+          </p>
+
+          
+           
+          </div>
+          <div class="column2" style=" width: 36%; margin-left: 8%; margin-right: 6%">
+            
+            <p style="font-weight: 400; font-size: 20px;">
+              Business related data:
+          </p>
+            <p>
+              Numbers, sizes and types of businesses: <a href="https://data.seattle.gov/Finance/2017-Active-Businesses-License-Data/rewu-ipqu" target="_blank">https://data.seattle.gov/Finance/2017-Active-Businesses-License-Data/rewu-ipqu</a></br>
+            </p>
+
+            <p style="font-weight: 400; font-size: 20px;">
+              Infrastructure:
+          </p>
+            <p>
+              Restaurants: <a href="https://data.kingcounty.gov/Health-Wellness/Food-Establishment-Inspection-Data/f29f-zza5" target="_blank">https://data.kingcounty.gov/Health-Wellness/Food-Establishment-Inspection-Data/f29f-zza5</a></br>
+            </p>
+            <p>
+              Stores: <a href="https://data.kingcounty.gov/Health/grocery/8bgz-hyjq" target="_blank">https://data.kingcounty.gov/Health/grocery/8bgz-hyjq</a></br>
+            </p>
+                     
+          </div>
+
+        </div>
+
+        <div class="row" style="width: 70%; margin-left: 7.5%; margin-right: 2.5%;height: 5%; display:table">
+          <div style="display: table-cell; vertical-align: middle; font-size: 18px;">
+            
+            <p style="font-weight: 400; font-size: 32px;">
+              About Us 
+            </p>
+            <p>
+            <span style="font-weight: 400">Our team (alphabetical by last name):</span>
+              <br> Yao Dou, Bowen Xu, Haoran Yu, Wenpei (Peggy) Zhang. 
+            </p>
+              
+              <p> <br>This is a part of the final project for CSE 442 at the University of Washington. 
+
+                Special thanks to our instructor Matthew Conlen. </p> 
+                  
+          </div>
+        </div>
+        
       </div>
     </div>
     <script src="index.js"></script>
