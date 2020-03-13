@@ -6,6 +6,10 @@
     width: 50%;
 }
 
+.column2 {
+    float: left;
+}
+
 .list-group-item {
     cursor: move;
     cursor: -webkit-grabbing;
@@ -39,6 +43,7 @@
 
 .col {
     padding-right: 0;
+    margin-left: 30px;
     margin-right: 15px;
     flex-basis: 0;
     flex-grow: 1;
@@ -50,6 +55,7 @@
 .three-column {
     float: left;
     width: 33%;
+    margin-top: 60px;
 }
 
 /* #search {
@@ -58,10 +64,14 @@
 
 .leftcolumn {
     width: 30%;
+    margin-left: 30px;
+    margin-top: 30px;
 }
 
 .rightcolumn {
     width: 70%;
+    margin-top: 240px;
+    position: relative;
 }
 
 #final1 {
@@ -106,6 +116,9 @@ h1 {
     font-weight: 300;
     color: #40629f;
 }
+p {
+    font-size: 18px;
+}
 
 div.tooltip {
     position: absolute;
@@ -125,7 +138,7 @@ div.tooltip {
 
 .line {
     fill: none;
-    stroke: #E4002B;
+    stroke: rgb(228, 194, 0);
     stroke-width: 2px;
 }
 
