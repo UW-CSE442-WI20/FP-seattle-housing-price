@@ -69,13 +69,19 @@ class ZipMap {
         let score = [];
 
         function handleMouseClick() {
-            if (choose.length < 2) {
+            if ((choose.length < 2 || typeof choose[0] == "undefined") && choose[0] !== this && choose[1] !== this) {
                 let name = ["bus", "company", "crime", "grocery", "price", "link", "restaurant", "school"];
-                choose.push(this);
+                let b = 0;
+                if (choose.length < 2) {
+                    choose.push(this);
+                } else {
+                    choose[0] = this;
+                    b = 1;
+                }
                 let yPo = h/10;
-                if (choose.length === 1) {
+                if (choose.length === 1 || b === 1) {
                     d3.select(this).style("fill", "#00FFCC");
-                    svg1.append("rect").attr("x", 3*w/10).attr("y", yPo).attr("height", h/5).attr("width", w/15).attr("id", "rect").style("fill", "F7F7F7");
+                    svg1.append("rect").attr("x", 3*w/10).attr("y", yPo).attr("height", h/5).attr("width", w/15).attr("id", "name").style("fill", "F7F7F7");
 
                     let dat = [];
                     for (let i of Object.entries(data)) {
@@ -100,12 +106,12 @@ class ZipMap {
                         let b = w/5 * a/i[1]["max"];
                         if (b === 0) {
                             svg1.append("rect").attr("x", 3*w/10).attr("y", yPo).attr("height", h/50).transition().duration(600)
-                                .attr("x", 3*w/10-1).attr("y", yPo).attr("height", h/50).attr("width", 1).attr("id", "rect").style("fill", "black");
+                                .attr("x", 3*w/10-1).attr("y", yPo).attr("height", h/50).attr("width", 1).attr("id", "rect1").style("fill", "black");
                         } else {
                             svg1.append("rect").attr("x", 3*w/10).attr("y", yPo).attr("height", h/50).transition().duration(600)
-                                .attr("x", 3*w/10-b).attr("y", yPo).attr("height", h/50).attr("width", b).attr("id", "rect").style("fill", "#00FFCC");
+                                .attr("x", 3*w/10-b).attr("y", yPo).attr("height", h/50).attr("width", b).attr("id", "rect1").style("fill", "#00FFCC");
                         }
-                        svg1.append("text").attr("x", 3*w/10-b-datWidth[j]-w/200).attr("y", yPo+h/60).transition().delay(300).duration(1).text(a).attr("id", "rect").attr("font-size", w/90);
+                        svg1.append("text").attr("x", 3*w/10-b-datWidth[j]-w/200).attr("y", yPo+h/60).transition().delay(300).duration(1).text(a).attr("id", "rect1").attr("font-size", w/90);
                         score.push({xPo1: 3*w/10-b-a.toString().length*12, yPo: yPo+h/60, value1: a});
                         yPo += h/40;
                         j++;
@@ -122,7 +128,7 @@ class ZipMap {
                         svg1.append("text").attr("x", w/3-textWidth[i]/2).attr("y", yPo).text(name[i]).attr("id", "name").attr("font-size", w/90);
                         yPo += h/40;
                     }
-                    svg1.append("text").attr("x", w/5).attr("y", h/10-h/70).text(this.id).attr("id", "rect").attr("font-size", w/90);
+                    svg1.append("text").attr("x", w/5).attr("y", h/10-h/70).text(this.id).attr("id", "rect1").attr("font-size", w/90);
                 } else {
                     d3.select(this).style("fill", "#66CCFF");
                     let p = 0;
@@ -134,12 +140,12 @@ class ZipMap {
                         let b = w/5 * a/i[1]["max"];
                         if (b === 0) {
                             svg1.append("rect").attr("x", 11*w/30).attr("y", yPo).attr("height", h/50)
-                                .transition().duration(600).attr("width", 1).attr("id", "rect").style("fill", "black");
+                                .transition().duration(600).attr("width", 1).attr("id", "rect2").style("fill", "black");
                         } else {
                             svg1.append("rect").attr("x", 11*w/30).attr("y", yPo).attr("height", h/50)
-                                .transition().duration(600).attr("width", b).attr("id", "rect").style("fill", "#66CCFF");
+                                .transition().duration(600).attr("width", b).attr("id", "rect2").style("fill", "#66CCFF");
                         }
-                        svg1.append("text").attr("x", 11*w/30+b+w/200).attr("y", yPo+h/60).transition().delay(300).duration(1).text(a).attr("id", "rect").attr("font-size", w/90);
+                        svg1.append("text").attr("x", 11*w/30+b+w/200).attr("y", yPo+h/60).transition().delay(300).duration(1).text(a).attr("id", "rect2").attr("font-size", w/90);
                         yPo += h/40;
                         score[p]["xPo2"] = 11*w/30+b+w/200;
                         score[p]["value2"] = a;
@@ -156,7 +162,7 @@ class ZipMap {
                     //     }
                     //     yPo += h/40;
                     // }
-                    svg1.append("text").attr("x", w/2.2).attr("y", h/10-h/70).text(this.id).attr("id", "rect").attr("font-size", w/90);
+                    svg1.append("text").attr("x", w/2.2).attr("y", h/10-h/70).text(this.id).attr("id", "rect2").attr("font-size", w/90);
                     // d3.selectAll("#name").style("cursor", "pointer").on("click", function(d, i){
                     //     d3.selectAll("#score").remove();
                     //     svg1.append("text").attr("x", score[i].xPo1-30).attr("y", score[i].yPo).text(score[i].value1).attr("id", "score");
@@ -184,6 +190,29 @@ class ZipMap {
                     //         .attr("width", score[i].xPo2-400).attr("id", "score").style("fill", "#66CCFF");
                     // });
                 }
+            } else if (typeof choose[0] != "undefined" && this.id === choose[0].id) {
+                d3.select(this).style("fill", "#D3D3D3");
+                d3.selectAll("#rect1").remove();
+                if (choose.length === 2) {
+                    let sec = choose.pop();
+                    choose = [];
+                    choose[1] = sec;
+                } else {
+                    choose.pop();
+                }
+                if (choose.length === 0) {
+                    d3.selectAll("#name").remove();
+                }
+            } else if (typeof choose[1] != "undefined" && this.id === choose[1].id) {
+                d3.select(this).style("fill", "#D3D3D3");
+                d3.selectAll("#rect2").remove();
+                choose.pop();
+                if (typeof choose[0] == "undefined") {
+                    choose.pop();
+                }
+                if (choose.length === 0) {
+                    d3.selectAll("#name").remove();
+                }
             } else {
                 alert("Please reset the chosen area")
             }
@@ -196,8 +225,11 @@ class ZipMap {
             let dis = document.getElementById("radiusSelect").value;
             if (zip in center) {
                 let arc = d3.arc().innerRadius(dis*w1/15).outerRadius(dis*w1/15);
-                svg.append("path").attr("fill", "none").attr("stroke", "black").attr("d", arc({startAngle:0, endAngle: 2*Math.PI}))
-                    .attr("transform","translate("+center[zip][0]+","+center[zip][1]+")").attr("id", "circle");
+                let a = d3.arc().innerRadius(1).outerRadius(1);
+                svg.append("path").attr("transform","translate("+center[zip][0]+","+center[zip][1]+")")
+                    .attr("d", a({startAngle:0, endAngle: 2*Math.PI})).transition().duration(600)
+                    .attr("d", arc({startAngle:0, endAngle: 2*Math.PI}))
+                    .attr("fill", "none").attr("stroke", "black").attr("id", "circle");
                 svg.append("circle").attr("cx", center[zip][0]).attr("cy", center[zip][1]).attr("r", w1/200).attr("id", "circle");
             } else {
                 alert("Please enter valid zip code!")
@@ -209,7 +241,8 @@ class ZipMap {
             score = [];
             d3.select(choose.pop()).style("fill", "D3D3D3");
             d3.select(choose.pop()).style("fill", "D3D3D3");
-            d3.selectAll("#rect").remove();
+            d3.selectAll("#rect1").remove();
+            d3.selectAll("#rect2").remove();
             d3.selectAll("#name").remove();
             d3.selectAll("#score").remove();
         };
