@@ -2,7 +2,7 @@ class busMap {
     constructor() {}
 
 
-    drawMap(d3, zipData, busData, priceData) {
+    drawMap(d3, zipData, busData, linkData, priceData) {
         var theme = "Bus";
         var textElementID = "description" + theme;
         var scatterPlotID = "draw" + theme;
@@ -40,6 +40,11 @@ class busMap {
         for (let i of Object.entries(busData)) {
             data["bus"][i[1].zip] = i[1].total_count;
             maxValue = Math.max(i[1].total_count, maxValue);
+        }
+
+        for (let i of Object.entries(linkData)) {
+            data["bus"][i[1].zip] += i[1].total_count;
+            maxValue = Math.max(data["bus"][i[1].zip], maxValue);
         }
 
         console.log(data);
