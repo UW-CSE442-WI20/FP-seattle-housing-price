@@ -112,8 +112,8 @@ class gdp {
                         svg.append("text").attr("text-anchor", "end").attr("x", w/10-w/200).attr("y", h/6+h/18*j+w/300).text((houseMax*(6-j)/6).toFixed(0)).attr("font-size", w/200);
                     }
 
-                    svg.append("text").attr("x", w/10).attr("y", h/6-h/30).text("Housing price: +" + (((houseMax - houseMin) * 100/ houseMin).toFixed(1)) + " %");
-                    svg.append("text").attr("x", w/5).attr("y", h/6-h/30).text("GDP: +" + (((gdpMax - gdpMin) * 100 / gdpMin).toFixed(1)) + " %");
+                    svg.append("text").attr("x", w/10).attr("y", h/6-h/30).text("Housing price: +" + (((houseMax - houseMin) * 100/ houseMin).toFixed(1)) + " %").attr("font-size", w/120);
+                    svg.append("text").attr("x", w/5).attr("y", h/6-h/30).text("GDP: +" + (((gdpMax - gdpMin) * 100 / gdpMin).toFixed(1)) + " %").attr("font-size", w/120);
                 }
             }
         }
