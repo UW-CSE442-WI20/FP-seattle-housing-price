@@ -64,6 +64,15 @@ class bestZip {
         searchButton.onclick = function(){
             
             var parameters = sorRight.toArray();
+            if (parameters.length == 0) {
+                d3.select("#bestZipMap").select("svg").selectAll("path").transition()
+                    .style("fill", "lightgrey").style("stroke", "white").duration(1000);
+                d3.select("#bestZipAnalysis").select("svg").remove();
+                $("#zipH4").remove();
+                prevParameters = [];
+                whetherControl = false;
+                return;
+            }
             if (prevParameters.equals(parameters)) {
                 whetherSameParameters = true;
             } else {
@@ -158,7 +167,7 @@ class bestZip {
             .domain([20, 35, 50, 65, 80, 95])
             .range(gradient);
         var toolTipG;
-        var toolTipWidth = 150, toolTipHeight = 50;
+        var toolTipWidth = 140, toolTipHeight = 50;
         var toolTipText = "No data";
 
         var zipCodes = [];
@@ -322,15 +331,14 @@ class bestZip {
                 .style('opacity', 0.85);
             toolTipG.append("text")
                 .style("pointer-events", "none")
+                .style("text-align", "center")
                 .attr("dy", "1.2em")
                 .attr("dx", "6")
-                .attr("font-family", "Open Sans")
                 .text(this.id.slice(0, 5));
             if (whetherControl) {
                 var scoreForZipcode = scores[this.id.slice(0, 5)];
                 toolTipG.append("text")
                 .style("pointer-events", "none")
-                .attr("font-family", "Open Sans")
                 .style("font-weight", 400)
                 .attr("dy", "2.4em")
                 .attr("dx", "6")
@@ -528,7 +536,7 @@ class bestZip {
             svg3.order();
         }
 
-        if (redraw) {
+        if (redraw && prevParameters.length > 0) {
             scores = getZipScore(prevParameters);
             d3.select("#bestZipMap").select("svg").selectAll("path").transition().style("fill", function(d) {
                 return mapFillFunct(d, scores);

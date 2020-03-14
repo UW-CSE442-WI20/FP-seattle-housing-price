@@ -49,6 +49,7 @@ class ZipMap {
 
         let map = svg.selectAll("path").data(zipData.features).enter().append("path")
             .attr("d", path).style("fill", "#D3D3D3").style("stroke", "white")
+            .style("stroke-width", 2)
             .attr("id", function(d) {
                 let zip = d.properties.ZCTA5CE10;
                 center[zip] = path.centroid(d);
@@ -60,7 +61,7 @@ class ZipMap {
             .on("click", handleMouseClick);
 
         var toolTipG;
-        var toolTipWidth = 150, toolTipHeight = 50;
+        var toolTipWidth = 140, toolTipHeight = 50;
 
         function handleMouseOver() {
             d3.select(this).style("opacity", .7);
@@ -81,7 +82,6 @@ class ZipMap {
                 .style("pointer-events", "none")
                 .attr("dy", "1.2em")
                 .attr("dx", "6")
-                .attr("font-family", "Open Sans")
                 .text(this.id.slice(0, 5));
         }
 
