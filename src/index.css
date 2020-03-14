@@ -191,7 +191,7 @@ input[type=text] {
 
 #radiusSelect{
     display: inline;
-    margin-left: 250px;
+    /*margin-left: 250px;*/
     background-color: rgb(16, 107, 212);
     padding: .5em;
     -moz-border-radius: 5px;
