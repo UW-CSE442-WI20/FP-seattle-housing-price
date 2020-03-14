@@ -1,5 +1,9 @@
 import Sortable from 'sortablejs';
-var prevParameters = []
+var prevParameters = [];
+var parameters = [];
+var data_best = {};
+var bestZipCode = 0;
+var previousClickZip = "";
 var whetherControl = false;
 
 class bestZip {
@@ -63,7 +67,7 @@ class bestZip {
 
         searchButton.onclick = function(){
             
-            var parameters = sorRight.toArray();
+            parameters = sorRight.toArray();
             if (parameters.length == 0) {
                 d3.select("#bestZipMap").select("svg").selectAll("path").transition()
                     .style("fill", "lightgrey").style("stroke", "white").duration(1000);
@@ -93,8 +97,8 @@ class bestZip {
                 return mapFillFunct(d, scores);
             }).duration(1000);
                     // best zipcode Analysis
-            if (whetherControl && !whetherSameParameters) {
-                var bestZipCode = Object.keys(scores).reduce(function(a, b){ return scores[a] > scores[b] ? a : b });
+            if (whetherControl) {
+                bestZipCode = Object.keys(scores).reduce(function(a, b){ return scores[a] > scores[b] ? a : b });
                 if (prevBestZip !== "") {
                     document.getElementById(prevBestZip+"bestZip").style["stroke"] = "white";
                 }
@@ -109,7 +113,7 @@ class bestZip {
                         $("#zipH4").text("Your Best Match District: " + bestZipCode).fadeIn(500);
                      })
                 }
-                var data_best = getZipAnaData(bestZipCode, parameters);
+                data_best = getZipAnaData(bestZipCode, parameters);
                 d3.select("#bestZipAnalysis").select("svg").remove();
                 drawZipCodeAnalysis(data_best);
             }
@@ -308,8 +312,8 @@ class bestZip {
             })
             .on("mouseover", handleMouseOver)
             .on("mouseout", handleMouseOut)
-            .on("mousemove", handleMouseMove);
-            // # .on("click", handleMouseClick);
+            .on("mousemove", handleMouseMove)
+            .on("click", handleMouseClick);
 
         function handleMouseOver() {
             // console.log(this.id);
@@ -363,6 +367,118 @@ class bestZip {
             toolTipG.attr("transform", "translate(" + xPos +"," + yPos + ")");
         }
 
+        function handleMouseClick() {
+            if (!whetherControl) {
+                return;
+            }
+            
+            var id = this.id.slice(0, 5)
+            console.log(id)
+            var zipCodeAnaData = getZipAnaData(id, parameters)
+
+            var margin = {
+                top: 20,
+                right: 130,
+                bottom: 30,
+                left: 130
+            },
+            width = 500 - margin.left - margin.right,
+            height = 200 - margin.top - margin.bottom;
+            
+            var y = d3.scaleBand()
+            .range([height, 0])
+            .padding(0.4);
+            
+            var x = d3.scaleLinear()
+            .range([0, width])
+            .domain([0, 100]);
+
+            y.domain(zipCodeAnaData.map(function(d) {
+                return d.yAxis;
+                }));
+
+            if (!(document.getElementById(this.id).classList.contains("inAnalysis"))) {
+                if (previousClickZip !== "") {
+                    document.getElementById(previousClickZip).style["stroke"] = "white";
+                }
+                previousClickZip = this.id;
+                $("#zipH4").fadeOut(500, function() {
+                    $("#zipH4").text("Your Best Match District: " + bestZipCode + " vs " + previousClickZip.slice(0, 5)).fadeIn(500);
+                 })
+                var svg3 = d3.select("#bestZipAnalysis").select("svg").select("g");
+                
+                svg3.selectAll(".bar").remove();
+                svg3.selectAll("rect").transition().style("fill", "lightgrey").duration(1000);
+                svg3.selectAll("line").transition().remove().duration(500);
+                
+
+                var line = svg3.selectAll(null)
+                .data(zipCodeAnaData)
+                .enter()
+                .append("line")
+                .attr("y1", function(d) {
+                    return y(d.yAxis);
+                })
+                .attr("y2", function(d) {
+                    return y(d.yAxis) + y.bandwidth();
+                })
+                .attr("x1", function(d) {
+                    return x(d.xAxis);
+                })
+                .attr("x2", function(d) {
+                    return x(d.xAxis);
+                })
+                .transition()
+                .attr("stroke-width", 2)
+                .attr("stroke", "#19EC54")
+                .duration(500)
+
+                document.getElementById(this.id).style["stroke"] = "#19EC54";
+                $('#'+this.id+"bestZip").parent().append($('#'+this.id+"bestZip"));
+
+                var line2 = svg3.selectAll(null)
+                .data(data_best)
+                .enter()
+                .append("line")
+                .attr("y1", function(d) {
+                    return y(d.yAxis);
+                })
+                .attr("y2", function(d) {
+                    return y(d.yAxis) + y.bandwidth();
+                })
+                .attr("x1", function(d) {
+                    return x(d.xAxis);
+                })
+                .attr("x2", function(d) {
+                    return x(d.xAxis);
+                })
+                .transition()
+                .attr("stroke-width", 2)
+                .attr("stroke", function(d) {
+                    return d.color;
+                })
+                .duration(500)
+
+
+                
+            } else {
+                if (previousClickZip !== "" && previousClickZip !== this.id) {
+                    $("#" + previousClickZip).toggleClass("inAnalysis");
+                }
+                previousClickZip ="";
+                var svg3 = d3.select("#bestZipAnalysis").select("svg").select("g");
+
+                svg3.selectAll("line").transition().remove().duration(500);
+                d3.select("#bestZipAnalysis").select("svg").remove();
+                document.getElementById(this.id).style["stroke"] = "white";
+                drawZipCodeAnalysis(data_best);
+                $("#zipH4").fadeOut(500, function() {
+                    $("#zipH4").text("Your Best Match District: " + bestZipCode).fadeIn(500);
+                 })
+            }
+            $("#" + this.id).toggleClass("inAnalysis");
+        }
+
         function mapFillFunct(d, given_data) {
             var zipObject = given_data[+d.properties.ZCTA5CE10];
             if (zipObject) {
@@ -378,8 +494,8 @@ class bestZip {
                 return parameters.indexOf(a) == -1;
             });
             var result = [];
-            for (let index in parameters) {
-                var parameter = parameters[index];
+            for (let i in parameters) {
+                var parameter = parameters[i];
                 if ((zipcode in data[parameter])) {
                     var temp_dict = {};
                     if (parameter == "rest") {
@@ -390,7 +506,19 @@ class bestZip {
                     var value = data[parameter][zipcode];
                     temp_dict["xAxis"] = parseInt(value / data[parameter]["max"] * 100, 10);
                     temp_dict["value"] = value;
-                    temp_dict["color"] = gradient[gradient.length - 1 - index];
+                    temp_dict["color"] = gradient[gradient.length - 1 - i];
+                    result.unshift(temp_dict)
+                } else {
+                    var temp_dict = {};
+                    if (parameter == "rest") {
+                        temp_dict["yAxis"] = "restaurant";
+                    } else {
+                        temp_dict["yAxis"] = parameter;
+                    }
+                    var value = 0
+                    temp_dict["xAxis"] = parseInt(value / data[parameter]["max"] * 100, 10);
+                    temp_dict["value"] = value;
+                    temp_dict["color"] = "#2242B4";
                     result.unshift(temp_dict)
                 }
             }
@@ -403,6 +531,18 @@ class bestZip {
                         temp_dict["yAxis"] = parameter;
                     }
                     var value = data[parameter][zipcode];
+                    temp_dict["xAxis"] = parseInt(value / data[parameter]["max"] * 100, 10);
+                    temp_dict["value"] = value;
+                    temp_dict["color"] = "#2242B4";
+                    result.unshift(temp_dict)
+                } else {
+                    var temp_dict = {};
+                    if (parameter == "rest") {
+                        temp_dict["yAxis"] = "restaurant";
+                    } else {
+                        temp_dict["yAxis"] = parameter;
+                    }
+                    var value = 0
                     temp_dict["xAxis"] = parseInt(value / data[parameter]["max"] * 100, 10);
                     temp_dict["value"] = value;
                     temp_dict["color"] = "#2242B4";
@@ -474,7 +614,49 @@ class bestZip {
             })
             .attr("width", function(d) {
                 return x(d.xAxis);
-            });
+            })
+            var toolTip1;
+            backgroundBar.on("mouseover", function(d) {
+                if (previousClickZip !== "") {
+                    toolTip1 = svg3.append("g").attr('class', 'tooltip');
+                    var bestValue;
+                    if (d.yAxis == "restaurant") {
+                        bestValue = data["rest"][previousClickZip.slice(0, 5)];
+                    } else {
+                        bestValue = data[d.yAxis][previousClickZip.slice(0, 5)];
+                    }
+                    console.log(bestValue)
+        
+                    toolTip1.append("rect")
+                        .style('position', 'absolute')
+                        .style('z-index', 1001)
+                        .style('width', 120)
+                        .style('height', 30)
+                        .style('fill', 'white')
+                        .style('stroke', 'black')
+                        .style("pointer-events", "none")
+                        .style('opacity', 0.85);
+                    toolTip1.append("text")
+                        .style("pointer-events", "none")
+                        .style("text-align", "center")
+                        .attr("dy", "1.2em")
+                        .attr("dx", "6")
+                        .style("fill", "#19EC54")
+                        .text(previousClickZip.slice(0, 5) + ": " + bestValue);
+                }
+            }).on("mouseout", function() {
+                toolTip1.remove();
+            })
+            .on("mousemove", function() {
+                var xPos = d3.mouse(this)[0] - 15;
+                var yPos = d3.mouse(this)[1] - 80;
+                if (yPos - toolTipHeight < 0) {
+                    yPos = yPos + 65;
+                    xPos = xPos + 30;
+                }
+                toolTip1.attr("transform", "translate(" + xPos +"," + yPos + ")");
+            })
+
 
             var values = svg3.selectAll(null)
             .data(data_best)
@@ -543,7 +725,7 @@ class bestZip {
             }).duration(1000);
                     // best zipcode Analysis
             if (whetherControl) {
-                var bestZipCode = Object.keys(scores).reduce(function(a, b){ return scores[a] > scores[b] ? a : b });
+                bestZipCode = Object.keys(scores).reduce(function(a, b){ return scores[a] > scores[b] ? a : b });
                 if (prevBestZip !== "") {
                     document.getElementById(prevBestZip+"bestZip").style["stroke"] = "white";
                 }
@@ -558,7 +740,7 @@ class bestZip {
                         $("#zipH4").text("Your Best Match District: " + bestZipCode).fadeIn(500);
                      })
                 }
-                var data_best = getZipAnaData(bestZipCode, prevParameters);
+                data_best = getZipAnaData(bestZipCode, prevParameters);
                 d3.select("#bestZipAnalysis").select("svg").remove();
                 drawZipCodeAnalysis(data_best);
             }
