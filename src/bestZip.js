@@ -116,10 +116,10 @@ class bestZip {
                 parameters_weights = [0.5, 0.3, 0.2];
             }
             if (parameters.length == 4) {
-                parameters_weights = [0.5, 0.25, 0.15, 0.1];
+                parameters_weights = [0.4, 0.3, 0.2, 0.1];
             }
             if (parameters.length == 5) {
-                parameters_weights = [0.5, 0.2, 0.15, 0.1, 0.05];
+                parameters_weights = [0.4, 0.3, 0.15, 0.1, 0.05];
             }
             if (parameters.length == 6) {
                 parameters_weights = [0.35, 0.25, 0.2, 0.1, 0.07, 0.03];
