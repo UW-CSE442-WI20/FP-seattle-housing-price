@@ -61,7 +61,7 @@ class ZipMap {
             .on("click", handleMouseClick);
 
         var toolTipG;
-        var toolTipWidth = 140, toolTipHeight = 50;
+        var toolTipWidth = 57, toolTipHeight = 50;
 
         function handleMouseOver() {
             d3.select(this).style("opacity", .7);
@@ -80,7 +80,7 @@ class ZipMap {
                 .style('opacity', 0.85);
             toolTipG.append("text")
                 .style("pointer-events", "none")
-                .attr("dy", "1.2em")
+                .attr("dy", "2em")
                 .attr("dx", "6")
                 .text(this.id.slice(0, 5));
         }

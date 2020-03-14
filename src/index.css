@@ -270,6 +270,8 @@ input[type=text] {
 #firstPage {
     background-image: url("Seattle.jpg");
     background-size: cover;
+    width: 100%;
+    background-repeat: no-repeat;
 }
  .btn {
 	border: none;
