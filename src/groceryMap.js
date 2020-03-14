@@ -74,10 +74,6 @@ class groceryMap {
         //     .x(function(d) { return x(d.keyword); })
         //     .y(function(d) { return y(d.price); });
 
-        var div = d3.select("body").append("div")
-            .attr("class", "tooltip")
-            .style("opacity", 0);
-
         // append the svg obgect to the body of the page
         // appends a 'group' element to 'svg'
         // moves the 'group' element to the top left margin
@@ -171,7 +167,7 @@ class groceryMap {
                 .attr("cy", function(d) { return y(d.price); })
                 .on("mouseover", function(d) {
                     var div = d3.select("body").append("div")
-                        .attr("class", "tooltip")
+                        .attr("class", "tooltip").style("opacity", 0);
                     d3.select(this).style("fill", "#f95e0a");
                     // svg2.select(d).attr("fill", "#f95e0a");
                     document.getElementById(d.zipCode+theme).style.fill = "#f95e0a";
