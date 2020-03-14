@@ -1,0 +1,379 @@
+.row {
+    display: table-row;
+}
+.column {
+    /*float: left;*/
+    width: 50%;
+}
+
+.column2 {
+    float: left;
+}
+
+.list-group-item {
+    cursor: move;
+    cursor: -webkit-grabbing;
+}
+
+.list-group {
+    display: flex;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+    flex-basis: 0;
+    flex-grow: 1;
+    height: 100%;
+}
+
+#priority-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: 10px;
+}
+
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: .75rem 1.25rem;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.125);
+}
+
+.col {
+    padding-right: 0;
+    margin-left: 30px;
+    margin-right: 15px;
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 50%;
+    position: relative;
+    width: 50%;
+}
+
+.three-column {
+    float: left;
+    width: 33%;
+    margin-top: 60px;
+}
+
+/* #search {
+    display: inline-block;
+} */
+
+.leftcolumn {
+    width: 30%;
+    margin-left: 30px;
+    margin-top: 30px;
+}
+
+.rightcolumn {
+    width: 70%;
+    margin-top: 120px;
+    position: relative;
+    margin-left: 80px;
+}
+
+#final1 {
+    display: flex;
+}
+
+#schoolMap {
+    display: flex;
+}
+
+#groceryMap {
+    display: flex;
+}
+
+#restaurantMap {
+    display: flex;
+}
+
+#companyMap {
+    display: flex;
+}
+
+#busMap {
+    display: flex;
+}
+
+#crimeMap {
+    display: flex;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    opacity: 1;
+    font-size: 16px;
+    /*background-color: #212938; //Dark Mode
+    color: #ffffff;*/
+}
+
+h1 {
+    font-size: 60px;
+    font-weight: 300;
+    color: #40629f;
+}
+p {
+    font-size: 18px;
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 60px;
+    height: 42px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+}
+
+#priority-list ul {
+    position: absolute;
+}
+
+.line {
+    fill: none;
+    stroke: rgb(172, 18, 233);
+    stroke-width: 2px;
+}
+
+i {
+    font-size: 0.7em;
+}
+
+input, h4{
+    display: inline-block;
+}
+
+input[type=text] {
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px 8px;
+    width: 64px;
+    margin: 4px 0;
+    background-color: rgb(215, 231, 255) ;
+    text-align: center;
+    border-color: rgb(236, 236, 236);
+    
+  }
+
+  input[type=text]:focus {
+    background-color: rgb(255, 255, 255);
+  }
+
+#citySelect{
+    height: 40px;
+    margin-left: 80px;
+    margin-top: 10%;
+    background-color: rgb(16, 107, 212);
+    padding: .5em;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 6px;
+    color: #fff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 20px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+#citySelect:hover{
+    border: none;
+    background: orange;
+    box-shadow: 0px 0px 1px #777;
+}
+
+#radiusSelect{
+    display: inline;
+    /*margin-left: 250px;*/
+    background-color: rgb(16, 107, 212);
+    padding: .5em;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 6px;
+    color: #fff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 20px;
+    text-decoration: none;
+    border: none;
+}
+
+/*
+#zipSubmit {
+    display: inline-block;
+    margin-left: 20px;
+    background-color: rgb(54, 202, 86);
+    padding: .5em;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 6px;
+    color: #fff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 20px;
+    text-decoration: none;
+    border: none;
+   }
+#zipSubmit:hover {
+    border: none;
+    background: orange;
+    box-shadow: 0px 0px 1px #777;
+   }
+
+#chooseReset{
+    display: inline-block;
+    margin-left: 20px;
+    background-color: rgb(204, 92, 92);
+    padding: .5em;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 6px;
+    color: #fff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 20px;
+    text-decoration: none;
+    border: none; 
+}
+
+#chooseReset:hover {
+    border: none;
+    background: rgb(230, 114, 114);
+    box-shadow: 0px 0px 1px #777;
+   }
+
+#search {
+    display: inline-block;
+    margin-left: 80px;
+    background-color: rgb(54, 202, 86);
+    padding: .5em;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 6px;
+    color: #fff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 20px;
+    text-decoration: none;
+    border: none;
+   }
+#search:hover {
+    border: none;
+    background: orange;
+    box-shadow: 0px 0px 1px #777;
+    cursor: pointer;
+   }
+*/
+#firstPage {
+    background-image: url("https://uw-cse442-wi20.github.io/FP-seattle-housing-price/Seattle.5b5f5814.jpg");
+    background-size: cover;
+    width: 100%;
+    background-repeat: no-repeat;
+}
+ .btn {
+	border: none;
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+	background: none;
+	cursor: pointer;
+	padding: 15px 40px;
+	display: inline-block;
+	margin: 15px 30px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: 700;
+	outline: none;
+	position: relative;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+.btn:after {
+	content: '';
+	position: absolute;
+	z-index: -1;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+/* Button 6 */
+.btn-6 {
+	color: #fff;
+	background: #226fbe;
+	-webkit-transition: none;
+	-moz-transition: none;
+	transition: none;
+}
+
+.btn-6:active {
+	top: 2px;
+}
+
+/* Button 6f */
+.btn-6f {
+	border: 2px dashed #226fbe;
+	border-radius: 60px;
+}
+
+.btn-6f:hover {
+	background: transparent;
+	color: #226fbe;
+}
+
+/* Button 7f */
+.btn-7 {
+	color: #fff;
+	background: #d8513a;
+	-webkit-transition: none;
+	-moz-transition: none;
+	transition: none;
+}
+
+.btn-7:active {
+	top: 2px;
+}
+
+/* Button 7f */
+.btn-7f {
+	border: 2px dashed #d8513a;
+	border-radius: 60px;
+}
+
+.btn-7f:hover {
+	background: transparent;
+	color: #d8513a;
+}
+
+/* Button 8 */
+.btn-8 {
+	color: #fff;
+	background: #d8a13a;
+	-webkit-transition: none;
+	-moz-transition: none;
+	transition: none;
+}
+
+.btn-8:active {
+	top: 2px;
+}
+
+/* Button 8f */
+.btn-8f {
+	border: 2px dashed #d8b33a;
+	border-radius: 60px;
+}
+
+.btn-8f:hover {
+	background: transparent;
+	color: #f1be30;
+}
+
+
+/*# sourceMappingURL=https://uw-cse442-wi20.github.io/FP-seattle-housing-price/src.cb10fc66.css.map */

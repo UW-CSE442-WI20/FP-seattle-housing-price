@@ -97585,13 +97585,13 @@ function () {
       var path = d3.geoPath().projection(projection);
       var svg = d3.select("#map").append("svg").attr("width", w1).attr("height", h);
       var svg1 = d3.select("#compare").append("svg").attr("width", w).attr("height", h);
-      var map = svg.selectAll("path").data(zipData.features).enter().append("path").attr("d", path).style("fill", "#D3D3D3").style("stroke", "white").attr("id", function (d) {
+      var map = svg.selectAll("path").data(zipData.features).enter().append("path").attr("d", path).style("fill", "#D3D3D3").style("stroke", "white").style("stroke-width", 2).attr("id", function (d) {
         var zip = d.properties.ZCTA5CE10;
         center[zip] = path.centroid(d);
         return zip;
       }).on("mouseover", handleMouseOver).on("mouseout", handleMouseOut).on("mousemove", handleMouseMove).on("click", handleMouseClick);
       var toolTipG;
-      var toolTipWidth = 150,
+      var toolTipWidth = 57,
           toolTipHeight = 50;
 
       function handleMouseOver() {
@@ -97600,7 +97600,7 @@ function () {
 
         toolTipG = svg.append("g").attr('class', 'tooltip');
         toolTipG.append("rect").style('position', 'absolute').style('z-index', 1001).style('width', toolTipWidth).style('height', toolTipHeight).style('fill', 'white').style('stroke', 'black').style("pointer-events", "none").style('opacity', 0.85);
-        toolTipG.append("text").style("pointer-events", "none").attr("dy", "1.2em").attr("dx", "6").attr("font-family", "Open Sans").text(this.id.slice(0, 5));
+        toolTipG.append("text").style("pointer-events", "none").attr("dy", "2em").attr("dx", "6").text(this.id.slice(0, 5));
       }
 
       function handleMouseOut() {
@@ -114262,6 +114262,9 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var prevParameters = [];
+var whetherControl = false;
+
 var bestZip =
 /*#__PURE__*/
 function () {
@@ -114271,7 +114274,7 @@ function () {
 
   _createClass(bestZip, [{
     key: "drawGraph",
-    value: function drawGraph(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData) {
+    value: function drawGraph(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData, redraw) {
       // Warn if overriding existing method
       if (Array.prototype.equals) console.warn("Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code."); // attach the .equals method to Array's prototype to call it on any array
 
@@ -114302,7 +114305,6 @@ function () {
 
       var $ = require('jQuery');
 
-      var whetherControl = false;
       var whetherTextShown = true;
       var whetherSameParameters = false; // dragAndDrop List
 
@@ -114317,11 +114319,19 @@ function () {
       });
       var searchButton = document.getElementById("search");
       var scores;
-      var prevParameters = [];
       var prevBestZip = "";
 
       searchButton.onclick = function () {
         var parameters = sorRight.toArray();
+
+        if (parameters.length == 0) {
+          d3.select("#bestZipMap").select("svg").selectAll("path").transition().style("fill", "lightgrey").style("stroke", "white").duration(1000);
+          d3.select("#bestZipAnalysis").select("svg").remove();
+          $("#zipH4").remove();
+          prevParameters = [];
+          whetherControl = false;
+          return;
+        }
 
         if (prevParameters.equals(parameters)) {
           whetherSameParameters = true;
@@ -114517,7 +114527,7 @@ function () {
       var gradient = ["#ffd7e7", "#ffc7cc", "#f7b581", "#f09771", "#e67867", "#d95964", "#c73866"];
       var color = d3.scaleThreshold().domain([20, 35, 50, 65, 80, 95]).range(gradient);
       var toolTipG;
-      var toolTipWidth = 150,
+      var toolTipWidth = 140,
           toolTipHeight = 50;
       var toolTipText = "No data";
       var zipCodes = [];
@@ -114739,11 +114749,11 @@ function () {
 
         toolTipG = svg.append("g").attr('class', 'tooltip');
         toolTipG.append("rect").style('position', 'absolute').style('z-index', 1001).style('width', toolTipWidth).style('height', toolTipHeight).style('fill', 'white').style('stroke', 'black').style("pointer-events", "none").style('opacity', 0.85);
-        toolTipG.append("text").style("pointer-events", "none").attr("dy", "1.2em").attr("dx", "6").attr("font-family", "Open Sans").text(this.id.slice(0, 5));
+        toolTipG.append("text").style("pointer-events", "none").style("text-align", "center").attr("dy", "1.2em").attr("dx", "6").text(this.id.slice(0, 5));
 
         if (whetherControl) {
           var scoreForZipcode = scores[this.id.slice(0, 5)];
-          toolTipG.append("text").style("pointer-events", "none").attr("font-family", "Open Sans").style("font-weight", 400).attr("dy", "2.4em").attr("dx", "6").text("Your Match: " + scoreForZipcode + "%");
+          toolTipG.append("text").style("pointer-events", "none").style("font-weight", 400).attr("dy", "2.4em").attr("dx", "6").text("Your Match: " + scoreForZipcode + "%");
         }
       }
 
@@ -114915,6 +114925,40 @@ function () {
         });
         svg3.order();
       }
+
+      if (redraw && prevParameters.length > 0) {
+        scores = getZipScore(prevParameters);
+        d3.select("#bestZipMap").select("svg").selectAll("path").transition().style("fill", function (d) {
+          return mapFillFunct(d, scores);
+        }).duration(1000); // best zipcode Analysis
+
+        if (whetherControl) {
+          var bestZipCode = Object.keys(scores).reduce(function (a, b) {
+            return scores[a] > scores[b] ? a : b;
+          });
+
+          if (prevBestZip !== "") {
+            document.getElementById(prevBestZip + "bestZip").style["stroke"] = "white";
+          }
+
+          prevBestZip = bestZipCode;
+          document.getElementById(bestZipCode + "bestZip").style["stroke"] = "black";
+          $('#' + bestZipCode + "bestZip").parent().append($('#' + bestZipCode + "bestZip"));
+
+          if (whetherTextShown) {
+            $("#zipH4").text("Your Best Match District: " + bestZipCode).fadeIn(1000);
+            whetherTextShown = false;
+          } else {
+            $("#zipH4").fadeOut(500, function () {
+              $("#zipH4").text("Your Best Match District: " + bestZipCode).fadeIn(500);
+            });
+          }
+
+          var data_best = getZipAnaData(bestZipCode, prevParameters);
+          d3.select("#bestZipAnalysis").select("svg").remove();
+          drawZipCodeAnalysis(data_best);
+        }
+      }
     }
   }]);
 
@@ -114986,11 +115030,22 @@ function () {
 
               var dat = gdpData[i].data;
               var gdpMax = 0;
+              var gdpMin = 0;
+              var houseMin = 0;
               var houseMax = 0;
 
               for (var _i = 0, _Object$entries = Object.entries(dat); _i < _Object$entries.length; _i++) {
                 var _j4 = _Object$entries[_i];
                 gdpMax = Math.max(gdpMax, _j4[1].gdp_per_capita);
+
+                if (gdpMin === 0) {
+                  gdpMin = _j4[1].gdp_per_capita;
+                }
+
+                if (houseMin === 0) {
+                  houseMin = _j4[1].housing;
+                }
+
                 houseMax = Math.max(houseMax, _j4[1].housing);
               }
 
@@ -115058,6 +115113,9 @@ function () {
                 svg.append("text").attr("x", 9 * w / 10 + w / 200).attr("y", h / 6 + h / 18 * _j3 + w / 300).text((gdpMax * (6 - _j3) / 6).toFixed(0)).attr("font-size", w / 200);
                 svg.append("text").attr("text-anchor", "end").attr("x", w / 10 - w / 200).attr("y", h / 6 + h / 18 * _j3 + w / 300).text((houseMax * (6 - _j3) / 6).toFixed(0)).attr("font-size", w / 200);
               }
+
+              svg.append("text").attr("x", w / 10).attr("y", h / 6 - h / 30).text("Housing price: +" + ((houseMax - houseMin) * 100 / houseMin).toFixed(1) + " %").attr("font-size", w / 120);
+              svg.append("text").attr("x", w / 5).attr("y", h / 6 - h / 30).text("GDP: +" + ((gdpMax - gdpMin) * 100 / gdpMin).toFixed(1) + " %").attr("font-size", w / 120);
             })();
           }
         }
@@ -115076,10 +115134,10 @@ var myFullpage = new fullpage('#fullpage', {
   //Navigation
   menu: '#menu',
   lockAnchors: false,
-  anchors: ['firstPage', 'secondPage', 'thirdPage', 'fourthPage', 'fifthPage', 'sixthPage', 'sevenPage', 'eightPage', 'ninePage', 'tenPage', 'elevenpage', 'twelvePage'],
+  anchors: ['firstPage', 'secondPage', 'thirdPage', 'fourthPage', 'fifthPage', 'sixthPage', 'sevenPage', 'eightPage', 'ninePage', 'tenPage', 'elevenpage', 'twelvePage', 'thirteenPage'],
   navigation: true,
   navigationPosition: 'right',
-  navigationTooltips: ['Introduction', 'GDP', 'Company', 'Transportation', 'Crime', 'Restaurant', 'Grocery Store', 'School', 'Section Summary', 'Zip code Comparison', 'Best Area Search', 'Source & About Us'],
+  navigationTooltips: ['Introduction', 'GDP', 'Factors', 'Company', 'Transportation', 'Crime', 'School', 'Restaurant', 'Grocery Store', 'Section Summary', 'Zip code Comparison', 'Best Area Search', 'Source & About Us'],
   // showActiveTooltip: false,
   // slidesNavigation: true,
   // slidesNavPosition: 'bottom',
@@ -115204,7 +115262,7 @@ crimeMapInstance.drawMap(d3, zipData, crimeData, priceData);
 var bestZip = require('./bestZip');
 
 var bestZipInstance = new bestZip();
-bestZipInstance.drawGraph(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
+bestZipInstance.drawGraph(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData, false);
 
 var gdp = require('./gdp');
 
@@ -115222,7 +115280,7 @@ function redraw() {
   companyMapInstance.drawMap(d3, zipData, companyData, priceData);
   busMapInstance.drawMap(d3, zipData, busData, linkData, priceData);
   crimeMapInstance.drawMap(d3, zipData, crimeData, priceData);
-  bestZipInstance.drawGraph(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
+  bestZipInstance.drawGraph(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData, true);
 }
 },{"./fullpage":"fullpage.js","./data/bus_stations_by_zip_code.json":"data/bus_stations_by_zip_code.json","./data/company_by_zip_code.json":"data/company_by_zip_code.json","./data/crime_by_zip_code.json":"data/crime_by_zip_code.json","./data/grocery_by_zip_code.json":"data/grocery_by_zip_code.json","./data/housing_price_by_zip_code.json":"data/housing_price_by_zip_code.json","./data/link_stations_by_zip_code.json":"data/link_stations_by_zip_code.json","./data/restaurants_by_zip_code.json":"data/restaurants_by_zip_code.json","./data/schools_by_zip_code.json":"data/schools_by_zip_code.json","./data/zipcode.json":"data/zipcode.json","./data/gdp_vs_avg_housing":"data/gdp_vs_avg_housing.json","d3":"../node_modules/d3/index.js","./zipMap":"zipMap.js","./schoolMap":"schoolMap.js","./groceryMap":"groceryMap.js","./restaurantMap":"restaurantMap.js","./companyMap":"companyMap.js","./busMap":"busMap.js","./crimeMap":"crimeMap.js","./bestZip":"bestZip.js","./gdp":"gdp.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -115252,7 +115310,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58933" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65352" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
