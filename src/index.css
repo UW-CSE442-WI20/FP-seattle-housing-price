@@ -267,13 +267,7 @@ input[type=text] {
     cursor: pointer;
    }
 
-#bg {
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    height: 812px;
-    opacity: .15;
-    
-    /* Preserve aspet ratio */
-    min-width: 100%;
-  }
+#firstPage {
+    background-image: url("Seattle.jpg");
+    background-size: cover;
+}
