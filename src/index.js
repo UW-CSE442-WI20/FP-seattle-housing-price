@@ -118,7 +118,7 @@ crimeMapInstance.drawMap(d3, zipData, crimeData, priceData);
 
 const bestZip = require('./bestZip');
 const bestZipInstance = new bestZip();
-bestZipInstance.drawGraph(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
+bestZipInstance.drawGraph(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData, false);
 
 
 const gdp = require('./gdp');
@@ -140,5 +140,5 @@ function redraw() {
     busMapInstance.drawMap(d3, zipData, busData, linkData, priceData);
     crimeMapInstance.drawMap(d3, zipData, crimeData, priceData);
 
-    bestZipInstance.drawGraph(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData);
+    bestZipInstance.drawGraph(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData, true);
 }

@@ -1,10 +1,13 @@
 import Sortable from 'sortablejs';
+var prevParameters = []
+var whetherControl = false;
 
 class bestZip {
-    constructor() {}
+    constructor() {
+    }
+    
 
-
-    drawGraph(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData) {
+    drawGraph(d3, zipData, busData, companyData, crimeData, groceryData, priceData, linkData, restData, schoolData, redraw) {
 
         // Warn if overriding existing method
         if(Array.prototype.equals)
@@ -38,7 +41,7 @@ class bestZip {
 
         var $ = require('jQuery');
 
-        var whetherControl = false;
+        
         var whetherTextShown = true;
         var whetherSameParameters = false;
 
@@ -55,7 +58,7 @@ class bestZip {
         
         var searchButton = document.getElementById("search");
         var scores;
-        var prevParameters = [];
+
         var prevBestZip = "";
 
         searchButton.onclick = function(){
@@ -523,6 +526,34 @@ class bestZip {
             });
 
             svg3.order();
+        }
+
+        if (redraw) {
+            scores = getZipScore(prevParameters);
+            d3.select("#bestZipMap").select("svg").selectAll("path").transition().style("fill", function(d) {
+                return mapFillFunct(d, scores);
+            }).duration(1000);
+                    // best zipcode Analysis
+            if (whetherControl) {
+                var bestZipCode = Object.keys(scores).reduce(function(a, b){ return scores[a] > scores[b] ? a : b });
+                if (prevBestZip !== "") {
+                    document.getElementById(prevBestZip+"bestZip").style["stroke"] = "white";
+                }
+                prevBestZip = bestZipCode;
+                document.getElementById(bestZipCode+"bestZip").style["stroke"] = "black";
+                $('#'+bestZipCode+"bestZip").parent().append($('#'+bestZipCode+"bestZip"));
+                if (whetherTextShown) {
+                    $("#zipH4").text("Your Best Match District: " + bestZipCode).fadeIn(1000);
+                    whetherTextShown = false;
+                } else {
+                    $("#zipH4").fadeOut(500, function() {
+                        $("#zipH4").text("Your Best Match District: " + bestZipCode).fadeIn(500);
+                     })
+                }
+                var data_best = getZipAnaData(bestZipCode, prevParameters);
+                d3.select("#bestZipAnalysis").select("svg").remove();
+                drawZipCodeAnalysis(data_best);
+            }
         }
     }
 }
