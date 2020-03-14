@@ -70,8 +70,9 @@
 
 .rightcolumn {
     width: 70%;
-    margin-top: 240px;
+    margin-top: 120px;
     position: relative;
+    margin-left: 80px;
 }
 
 #final1 {
