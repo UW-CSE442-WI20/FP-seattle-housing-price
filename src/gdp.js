@@ -16,9 +16,17 @@ class gdp {
                 if (gdpData[i].name === city.value) {
                     let dat = gdpData[i].data;
                     let gdpMax = 0;
+                    let gdpMin = 0;
+                    let houseMin = 0;
                     let houseMax = 0;
                     for (let j of Object.entries(dat)) {
                         gdpMax = Math.max(gdpMax, j[1].gdp_per_capita);
+                        if (gdpMin === 0) {
+                            gdpMin = j[1].gdp_per_capita
+                        }
+                        if (houseMin === 0) {
+                            houseMin = j[1].housing
+                        }
                         houseMax = Math.max(houseMax, j[1].housing);
                     }
                     svg.append("line").attr("x1", w/10).attr("y1", h/2).attr("x2", 9*w/10).attr("y2", h/2).style("stroke", "black");
@@ -103,6 +111,9 @@ class gdp {
                         svg.append("text").attr("x", 9*w/10+w/200).attr("y", h/6+h/18*j+w/300).text((gdpMax*(6-j)/6).toFixed(0)).attr("font-size", w/200);
                         svg.append("text").attr("text-anchor", "end").attr("x", w/10-w/200).attr("y", h/6+h/18*j+w/300).text((houseMax*(6-j)/6).toFixed(0)).attr("font-size", w/200);
                     }
+
+                    svg.append("text").attr("x", w/10).attr("y", h/6-h/30).text("Housing price: +" + (((houseMax - houseMin) * 100/ houseMin).toFixed(1)) + " %");
+                    svg.append("text").attr("x", w/5).attr("y", h/6-h/30).text("GDP: +" + (((gdpMax - gdpMin) * 100 / gdpMin).toFixed(1)) + " %");
                 }
             }
         }
