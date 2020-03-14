@@ -170,9 +170,12 @@ class groceryMap {
                 .attr("cx", function(d) { return x(d.keyword); })
                 .attr("cy", function(d) { return y(d.price); })
                 .on("mouseover", function(d) {
+                    var div = d3.select("body").append("div")
+                        .attr("class", "tooltip")
                     d3.select(this).style("fill", "#f95e0a");
                     // svg2.select(d).attr("fill", "#f95e0a");
                     document.getElementById(d.zipCode+theme).style.fill = "#f95e0a";
+
                     div.transition()
                         .duration(200)
                         .style("opacity", .9);
@@ -186,9 +189,9 @@ class groceryMap {
                 .on("mouseout", function(d) {
                     document.getElementById(d.zipCode+theme).style.fill = color(d.keyword);
                     d3.select(this).style("fill", color(d.keyword));
-                    div.transition()
+                    d3.selectAll(".tooltip").transition()
                         .duration(200)
-                        .style("opacity", 0);
+                        .style("opacity", 0).remove();
                 });
             // add the X Axis
             svg2.append("g")
