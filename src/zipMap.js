@@ -281,6 +281,7 @@ class ZipMap {
             d3.selectAll("#rect2").remove();
             d3.selectAll("#name").remove();
             d3.selectAll("#score").remove();
+            d3.selectAll("#circle").remove();
         };
 
 

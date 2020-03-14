@@ -170,10 +170,10 @@ class schoolMap {
                     d3.select(this).style("fill", "#f95e0a");
                     // svg2.select(d).attr("fill", "#f95e0a");
                     document.getElementById(d.zipCode+theme).style.fill = "#f95e0a";
-                    div.transition()
-                        .duration(200)
+                    div
+                        // .transition().duration(200)
                         .style("opacity", .9);
-                    div .html(
+                    div.html(
                         d.zipCode + "<br/>" + d.keyword +
                         "<br/>"  + "<b>" + "$" + d.price + "<b/>")
                         .style("left", (d3.event.pageX - 15) + "px")
@@ -183,8 +183,8 @@ class schoolMap {
                 .on("mouseout", function(d) {
                     document.getElementById(d.zipCode+theme).style.fill = color(d.keyword);
                     d3.select(this).style("fill", color(d.keyword));
-                    div.transition()
-                        .duration(200)
+                    div
+                        // .transition().duration(200)
                         .style("opacity", 0);
                 });
             // add the X Axis
