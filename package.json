@@ -16,7 +16,7 @@
   "dependencies": {
     "baseui": "^9.62.0",
     "d3": "^5.15.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "sortablejs": "^1.10.2",
